@@ -46,7 +46,7 @@ private:
 	bool isGameStart_ = false;
 
 	// 移動用Vector3
-	KamataEngine::Vector3 move = { 0.0f, 0.0f, 0.0f };
+	KamataEngine::Vector3 move_ = { 0.0f, 0.0f, 0.0f };
 
 	// 落下方向
 	bool isDownFall = false;
@@ -54,7 +54,7 @@ private:
 	// 横移動の上限速度(変更可)
 	const float kMaxLimitSpeed_ = 0.2f;
 	// 落下速度の上限速度(変更可)
-	const float kMaxLimitFallSpeed_ = 0.3f;
+	const float kMaxLimitFallSpeed_ = 0.8f;
 	// 移動関数(Updateに入れる)
 	void Move();
 

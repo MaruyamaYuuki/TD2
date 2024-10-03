@@ -8,6 +8,7 @@
 #include "audio/Audio.h"
 #include "base/DirectXCommon.h"
 #include "input/Input.h"
+#include "Player.h"
 
     /// <summary>
     /// ゲームシーン
@@ -43,6 +44,10 @@ private:
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
 	KamataEngine::Input* input_ = nullptr;
 	KamataEngine::Audio* audio_ = nullptr;
+	KamataEngine::Camera camera_;
+
+	Player* player_ = nullptr;
+	KamataEngine::Model* modelPlayer_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
