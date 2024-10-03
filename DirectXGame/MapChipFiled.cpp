@@ -14,7 +14,7 @@ std::map<std::string, MapChipType> mapChipTable = {
 }
 
 void MapChipFiled::ResetMapChipData() {
-	// ƒ}ƒbƒvƒ`ƒbƒvƒf[ƒ^‚ğƒŠƒZƒbƒg
+	// ãƒãƒƒãƒ—ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆ
 	mapChipData_.data.clear();
 	mapChipData_.data.resize(kNumBlockVirtical);
 	for (std::vector<MapChipType>& mapChipDataLine : mapChipData_.data) {
@@ -23,27 +23,27 @@ void MapChipFiled::ResetMapChipData() {
 }
 
 void MapChipFiled::LoadMapChipCsv(const std::string& filePath) {
-	// ƒ}ƒbƒvƒ`ƒbƒvƒf[ƒ^‚ğƒŠƒZƒbƒg
+	// ãƒãƒƒãƒ—ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆ
 	ResetMapChipData();
 
-	// ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	std::ifstream file;
 	file.open(filePath);
 	assert(file.is_open());
 
-	// ƒ}ƒbƒvƒ`ƒbƒvCSV
+	// ãƒãƒƒãƒ—ãƒãƒƒãƒ—CSV
 	std::stringstream mapChipCsv;
-	// ƒtƒ@ƒCƒ‹‚Ì“à—e‚ğ•¶š—ñƒXƒgƒŠ[ƒ€‚ÉƒRƒs[
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã‚’æ–‡å­—åˆ—ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«ã‚³ãƒ”ãƒ¼
 	mapChipCsv << file.rdbuf();
-	// ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 	file.close();
 
-	// CSV‚©‚çƒ}ƒbƒvƒ`ƒbƒvƒf[ƒ^‚ğ“Ç‚İ‚Ş
+	// CSVã‹ã‚‰ãƒãƒƒãƒ—ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
 	for (uint32_t i = 0; i < kNumBlockVirtical; ++i) {
 		std::string line;
 		getline(mapChipCsv, line);
 
-		// 1s•ª‚Ì•¶š—ñ‚ğƒXƒgƒŠ[ƒ€‚É•ÏŠ·‚µ‚Ä‰ğÍ‚µ‚â‚·‚­‚È‚é
+		// 1è¡Œåˆ†ã®æ–‡å­—åˆ—ã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«å¤‰æ›ã—ã¦è§£æã—ã‚„ã™ããªã‚‹
 		std::istringstream line_stream(line);
 
 		for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
@@ -78,7 +78,7 @@ MapChipFiled::IndexSet MapChipFiled::GetMapChipIndexSetByPosition(const KamataEn
 }
 
 MapChipFiled::Rect MapChipFiled::GetRectByIndex(uint32_t xIndex, uint32_t yIndex) {
-	// w’èƒuƒƒbƒN‚Ì’†SÀ•W‚ğæ“¾‚·‚é
+	// æŒ‡å®šãƒ–ãƒ­ãƒƒã‚¯ã®ä¸­å¿ƒåº§æ¨™ã‚’å–å¾—ã™ã‚‹
 	KamataEngine::Vector3 center = GetMapChipPositionByIndex(xIndex, yIndex);
 
 	Rect rect;

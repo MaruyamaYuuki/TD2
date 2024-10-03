@@ -6,8 +6,8 @@
 #include "math/Vector3.h"
 
 enum class MapChipType {
-	kBlank, // ‹ó”’
-	kBlock, // ƒuƒƒbƒN
+	kBlank, // ç©ºç™½
+	kBlock, // ãƒ–ãƒ­ãƒƒã‚¯
 	kEnemy,
 };
 struct MapChipData {
@@ -15,7 +15,7 @@ struct MapChipData {
 };
 
 /// <summary>
-/// ƒ}ƒbƒvƒ`ƒbƒvƒtƒB[ƒ‹ƒh
+/// ãƒãƒƒãƒ—ãƒãƒƒãƒ—ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 /// </summary>
 class MapChipFiled {
 
@@ -24,12 +24,12 @@ public:
 		uint32_t xIndex;
 		uint32_t yIndex;
 	};
-	// ”ÍˆÍ‹éŒ`
+	// ç¯„å›²çŸ©å½¢
 	struct Rect {
-		float left;   // ¶’[
-		float right;  // ‰E’[
-		float bottom; // ‰º’[
-		float top;    // ã’[
+		float left;   // å·¦ç«¯
+		float right;  // å³ç«¯
+		float bottom; // ä¸‹ç«¯
+		float top;    // ä¸Šç«¯
 	};
 
 public:
@@ -50,10 +50,10 @@ public:
 	Rect GetRectByIndex(uint32_t xIndex, uint32_t yIndex);
 
 private:
-	// 1ƒuƒƒbƒN‚ÌƒTƒCƒY
+	// 1ãƒ–ãƒ­ãƒƒã‚¯ã®ã‚µã‚¤ã‚º
 	static inline const float kBlockWidth = 1.0f;
 	static inline const float kBlockHeight = 1.0f;
-	// ƒuƒƒbƒN‚ÌŒÂ”
+	// ãƒ–ãƒ­ãƒƒã‚¯ã®å€‹æ•°
 	static inline const uint32_t kNumBlockVirtical = 20;
 	static inline const uint32_t kNumBlockHorizontal = 100;
 
