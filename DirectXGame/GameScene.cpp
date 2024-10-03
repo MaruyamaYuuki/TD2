@@ -2,6 +2,8 @@
 #include "base/TextureManager.h"
 #include <cassert>
 
+using namespace KamataEngine;
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
@@ -11,10 +13,25 @@ void GameScene::Initialize() {
 	dxCommon_ = KamataEngine::DirectXCommon::GetInstance();
 	input_ = KamataEngine::Input::GetInstance();
 	audio_ = KamataEngine::Audio::GetInstance();
+	camera_.Initialize();
+
+	// プレイヤー初期化
+	modelPlayer_ = Model::CreateFromOBJ("player");
+	player_ = new Player();
+	player_->Initialize(modelPlayer_, &camera_);
+
 
 }
 
-void GameScene::Update() {
+void GameScene::Update() { 
+
+	if (input_->TriggerKey(DIK_0)) {
+		player_->setIsGameStart(true);
+	}
+	// プレイヤー更新
+	player_->Update();
+
+
 }
 
 void GameScene::Draw() {
@@ -43,6 +60,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	//プレイヤー描画
+	player_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	KamataEngine::Model::PostDraw();
