@@ -15,7 +15,7 @@ void Player::Initialize(Model* model, Camera* camera) {
 }
 
 void Player::Update() { 
-	// ƒQ[ƒ€‚ªƒXƒ^[ƒg‚µ‚Ä‚¢‚½‚çXVŠJn
+	// ã‚²ãƒ¼ãƒ ãŒã‚¹ã‚¿ãƒ¼ãƒˆã—ã¦ã„ãŸã‚‰æ›´æ–°é–‹å§‹
 	if (isGameStart_) {
 		Move();
 	}
@@ -23,10 +23,10 @@ void Player::Update() {
 }
 
 void Player::Move() {
-	// ©“®ˆÚ“®
+	// è‡ªå‹•ç§»å‹•
 	move.x += 0.02f;
 
-	// ƒXƒy[ƒX‚ğ‰Ÿ‚µ‚Äd—Í‚ğ”½“]
+	// ã‚¹ãƒšãƒ¼ã‚¹ã‚’æŠ¼ã—ã¦é‡åŠ›ã‚’åè»¢
 	if (input_->TriggerKey(DIK_SPACE)) {
 		isDownFall = !isDownFall;
 	}
@@ -40,10 +40,10 @@ void Player::Move() {
 	}
 
 
-	// clampˆ—‚ÅˆÚ“®‘¬“x‚ğ§ŒÀ
+	// clampå‡¦ç†ã§ç§»å‹•é€Ÿåº¦ã‚’åˆ¶é™
 	move.x = std::clamp(move.x, 0.0f, kMaxLimitSpeed_);
 
-	// ˆÚ“®—Ê‚ğtranslation‚É‰ÁZ
+	// ç§»å‹•é‡ã‚’translationã«åŠ ç®—
 	worldTransform_.translation_ += move;
 
 }

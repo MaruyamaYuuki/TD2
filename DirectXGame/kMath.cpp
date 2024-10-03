@@ -1,7 +1,7 @@
 #include "kMath.h"
 using namespace KamataEngine;
 
-// Vector3‚Ì‘«‚µZ
+// Vector3ã®è¶³ã—ç®—
 Vector3& operator+=(Vector3& lhv, const Vector3& rhv) {
 	lhv.x += rhv.x;
 	lhv.y += rhv.y;
@@ -14,8 +14,8 @@ Vector3 operator+(const Vector3& v1, const Vector3& v2) {
 	return temp += v2;
 }
 
-// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
-// Vector3‚ÌŠ|‚¯Z
+// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// Vector3ã®æ›ã‘ç®—
 Vector3& operator*=(Vector3& v, float s) {
 	v.x *= s;
 	v.y *= s;
@@ -23,8 +23,8 @@ Vector3& operator*=(Vector3& v, float s) {
 	return v;
 };
 
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
-// Vector3‚ÌŠ|‚¯Z
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// Vector3ã®æ›ã‘ç®—
 const Vector3 operator*(const Vector3& v, float s) {
 	Vector3 temp(v);
 	return temp *= s;
@@ -41,9 +41,9 @@ float easeInOut(float t, float x1, float x2) {
 };
 
 bool IsCollision(const AABB& aabb1, const AABB& aabb2) {
-	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) && // x²
-	    (aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) && // y²
-	    (aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z))   // z²
+	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) && // xè»¸
+	    (aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) && // yè»¸
+	    (aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z))   // zè»¸
 	{
 		return true;
 	}
@@ -56,7 +56,7 @@ float Lerp(float x1, float x2, float t) { return (1.0f - t) * x1 + t * x2; };
 
 Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) { return Vector3(Lerp(v1.x, v2.x, t), Lerp(v1.y, v2.y, t), Lerp(v1.z, v2.z, t)); };
 
-// 1, x²‰ñ“]s—ñ
+// 1, xè»¸å›è»¢è¡Œåˆ—
 Matrix4x4 MakeRotateXMatrix(float radian) {
 	Matrix4x4 ans = {0};
 
@@ -70,7 +70,7 @@ Matrix4x4 MakeRotateXMatrix(float radian) {
 	return ans;
 };
 
-// 2, y²‰ñ“]s—ñ
+// 2, yè»¸å›è»¢è¡Œåˆ—
 Matrix4x4 MakeRotateYMatrix(float radian) {
 	Matrix4x4 ans = {0};
 
@@ -84,7 +84,7 @@ Matrix4x4 MakeRotateYMatrix(float radian) {
 	return ans;
 };
 
-// 3, z²‰ñ“]s—ñ
+// 3, zè»¸å›è»¢è¡Œåˆ—
 Matrix4x4 MakeRotateZMatrix(float radian) {
 	Matrix4x4 ans = {0};
 
@@ -108,7 +108,7 @@ Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 	return ans;
 };
 
-// ‚RŸŒ³ƒAƒtƒBƒ“•ÏŠ·s—ñ
+// ï¼“æ¬¡å…ƒã‚¢ãƒ•ã‚£ãƒ³å¤‰æ›è¡Œåˆ—
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 	Matrix4x4 S = {0};
 	Matrix4x4 R = {0};

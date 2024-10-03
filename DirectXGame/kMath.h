@@ -8,20 +8,20 @@
 #define _USE_MATH_DEFINES
 #include <cassert>
 #include <cmath>
-// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
-// Vector3‚Ì‘«‚µZ
+// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// Vector3ã®è¶³ã—ç®—
 KamataEngine::Vector3& operator+=(KamataEngine::Vector3& lhs, const KamataEngine::Vector3& rhv);
 
 KamataEngine::Vector3 operator+(const KamataEngine::Vector3& v1, const KamataEngine::Vector3& v2);
 
 bool IsCollision(const AABB& aabb1, const AABB& aabb2);
 
-// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
-// Vector3‚ÌŠ|‚¯Z
+// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// Vector3ã®æ›ã‘ç®—
 KamataEngine::Vector3& operator*=(KamataEngine::Vector3& v, float s);
 
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
-// Vector3‚ÌŠ|‚¯Z
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+// Vector3ã®æ›ã‘ç®—
 const KamataEngine::Vector3 operator*(const KamataEngine::Vector3& v, float s);
 
 // ease In-Out
@@ -32,19 +32,19 @@ float Lerp(float x1, float x2, float t);
 
 KamataEngine::Vector3 Lerp(const KamataEngine::Vector3& v1, const KamataEngine::Vector3& v2, float t);
 
-// 1, x²‰ñ“]s—ñ
+// 1, xè»¸å›è»¢è¡Œåˆ—
 KamataEngine::Matrix4x4 MakeRotateXMatrix(float radian);
 
-// 2, y²‰ñ“]s—ñ
+// 2, yè»¸å›è»¢è¡Œåˆ—
 KamataEngine::Matrix4x4 MakeRotateYMatrix(float radian);
 
-// 3, z²‰ñ“]s—ñ
+// 3, zè»¸å›è»¢è¡Œåˆ—
 KamataEngine::Matrix4x4 MakeRotateZMatrix(float radian);
 
 KamataEngine::Matrix4x4 Multiply(const KamataEngine::Matrix4x4& m1, const KamataEngine::Matrix4x4& m2);
 
-// ‚RŸŒ³ƒAƒtƒBƒ“•ÏŠ·s—ñ
+// ï¼“æ¬¡å…ƒã‚¢ãƒ•ã‚£ãƒ³å¤‰æ›è¡Œåˆ—
 KamataEngine::Matrix4x4 MakeAffineMatrix(const KamataEngine::Vector3& scale, const KamataEngine::Vector3& rotate, const KamataEngine::Vector3& translate);
 
-// 3, À•W•ÏŠ·
+// 3, åº§æ¨™å¤‰æ›
 KamataEngine::Vector3 MathTransform(const KamataEngine::Vector3& vector, const KamataEngine::Matrix4x4& matrix);

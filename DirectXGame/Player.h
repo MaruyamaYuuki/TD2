@@ -7,7 +7,7 @@
 #include "3d/ObjectColor.h"
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[ƒNƒ‰ƒX
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¯ãƒ©ã‚¹
 /// 
 /// </summary>
 
@@ -19,19 +19,19 @@ enum class fallDirection {
 class Player {
 public:
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera);
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update();
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
-	// ƒQ[ƒ€ƒXƒ^[ƒg‚Ìsetter
+	// ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆã®setter
 	bool setIsGameStart(bool start) { return isGameStart_ = start; }
 
 private:
@@ -41,18 +41,21 @@ private:
 	KamataEngine::WorldTransform worldTransform_;
 	KamataEngine::ObjectColor objectColor_;
 
-	/// ˆÚ“®Œn
-	// ƒQ[ƒ€‚ªn‚Ü‚Á‚Ä‚¢‚é‚©‚Ìƒtƒ‰ƒO(•ÏX•s‰Â)
+	/// ç§»å‹•ç³»
+	// ã‚²ãƒ¼ãƒ ãŒå§‹ã¾ã£ã¦ã„ã‚‹ã‹ã®ãƒ•ãƒ©ã‚°(å¤‰æ›´ä¸å¯)
 	bool isGameStart_ = false;
 
-	// ˆÚ“®—pVector3
+	// ç§»å‹•ç”¨Vector3
 	KamataEngine::Vector3 move = { 0.0f, 0.0f, 0.0f };
 
-	// ‰¡ˆÚ“®‚ÌãŒÀ‘¬“x(•ÏX‰Â)
+	// è½ä¸‹æ–¹å‘
+	bool isDownFall = false;
+
+	// æ¨ªç§»å‹•ã®ä¸Šé™é€Ÿåº¦(å¤‰æ›´å¯)
 	const float kMaxLimitSpeed_ = 0.2f;
-	// —‰º‘¬“x‚ÌãŒÀ‘¬“x(•ÏX‰Â)
+	// è½ä¸‹é€Ÿåº¦ã®ä¸Šé™é€Ÿåº¦(å¤‰æ›´å¯)
 	const float kMaxLimitFallSpeed_ = 0.3f;
-	// ˆÚ“®ŠÖ”(Update‚É“ü‚ê‚é)
+	// ç§»å‹•é–¢æ•°(Updateã«å…¥ã‚Œã‚‹)
 	void Move();
 
 };
