@@ -4,7 +4,7 @@
 //class Player;
 
 /// <summery>
-/// ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‹
+/// ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«
 /// </summary>
 class CameraController {
 
@@ -18,12 +18,12 @@ public:
 
 public:
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize();
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update();
 
@@ -36,19 +36,19 @@ public:
 	void SetMovebleaArea(Rect area) { movebleArea_ = area; };
 
 private:
-	// ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“
+	// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³
 	KamataEngine::Camera camera_;
 	//Player* target_ = nullptr;
-	// ’Ç]‘ÎÛ‚ÌƒJƒƒ‰‚ÌÀ•W‚Ì·iƒIƒtƒZƒbƒgj
+	// è¿½å¾“å¯¾è±¡ã®ã‚«ãƒ¡ãƒ©ã®åº§æ¨™ã®å·®ï¼ˆã‚ªãƒ•ã‚»ãƒƒãƒˆï¼‰
 	KamataEngine::Vector3 targetOffset_ = {0, 0, -15.0f};
-	// ƒJƒƒ‰ˆÚ“®”ÍˆÍ
+	// ã‚«ãƒ¡ãƒ©ç§»å‹•ç¯„å›²
 	Rect movebleArea_ = {0, 100, 0, 100};
-	// ƒJƒƒ‰‚Ì–Ú•WÀ•W
+	// ã‚«ãƒ¡ãƒ©ã®ç›®æ¨™åº§æ¨™
 	KamataEngine::Vector3 goalPos;
-	// À•W•âŠÔŠ„‡
+	// åº§æ¨™è£œé–“å‰²åˆ
 	static inline const float kInterpolationRate = 1.5f;
-	// ‘¬“xŠ|‚¯—¦
+	// é€Ÿåº¦æ›ã‘ç‡
 	static inline const float kVelocityBias = 30.0f;
-	// ’Ç]‘ÎÛ‚ÌŠe•ûŒü‚Ö‚ÌƒJƒƒ‰ˆÚ“®”ÍˆÍ
+	// è¿½å¾“å¯¾è±¡ã®å„æ–¹å‘ã¸ã®ã‚«ãƒ¡ãƒ©ç§»å‹•ç¯„å›²
 	static inline const Rect kMargin = {-5.0f, 5.0f, -4.0f, 4.0f};
 };
