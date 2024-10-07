@@ -45,7 +45,7 @@ public:
     /// <summary>
     /// ブロック生成
     /// </summary>
-	void GenerateBlock();
+	void GenerateBlocks();
 
 private:
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
@@ -56,8 +56,13 @@ private:
 	Player* player_ = nullptr;
 	KamataEngine::Model* modelPlayer_ = nullptr;
 
+	MapChipFiled* mapChipFiled_;
+	KamataEngine::Model* modelBlock_ = nullptr;
+	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
 	// ビュープロジェクション
+
 };
