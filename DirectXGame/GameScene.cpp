@@ -6,7 +6,14 @@ using namespace KamataEngine;
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {
+GameScene::~GameScene() { 
+	delete mapChipFiled_; 
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			delete worldTransformBlock;
+		}
+	}
+	worldTransformBlocks_.clear();
 }
 
 void GameScene::Initialize() {
@@ -20,7 +27,12 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	player_->Initialize(modelPlayer_, &camera_);
 
+	// マップチップフィールドの生成と初期化
+	modelBlock_ = Model::CreateFromOBJ("block", true);
+	mapChipFiled_ = new MapChipFiled;
+	mapChipFiled_->LoadMapChipCsv("Resources/map.csv");
 
+	GenerateBlocks();
 }
 
 void GameScene::Update() { 
@@ -31,7 +43,15 @@ void GameScene::Update() {
 	// プレイヤー更新
 	player_->Update();
 
-
+	// ブロックの更新
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock) {
+				continue;
+			}
+			worldTransformBlock->UpdateMatrix();
+		}
+	}
 }
 
 void GameScene::Draw() {
@@ -63,6 +83,16 @@ void GameScene::Draw() {
 	//プレイヤー描画
 	player_->Draw();
 
+		// ブロックの描画/
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock) {
+				continue;
+			}
+			modelBlock_->Draw(*worldTransformBlock, camera_);
+		}
+	}
+
 	// 3Dオブジェクト描画後処理
 	KamataEngine::Model::PostDraw();
 #pragma endregion
@@ -79,4 +109,28 @@ void GameScene::Draw() {
 	KamataEngine::Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::GenerateBlocks() {
+	// 要素数
+	uint32_t numBlockVirtical = mapChipFiled_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipFiled_->GetNumBlockHorizontal();
+	// 要素数を変更する
+	worldTransformBlocks_.resize(numBlockVirtical);
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+		// 1列の要素数を設定
+		worldTransformBlocks_[i].resize(numBlockHorizontal);
+	}
+
+	// ブロックの生成
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
+			if (mapChipFiled_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+				WorldTransform* worldTransform = new WorldTransform();
+				worldTransform->Initialize();
+				worldTransformBlocks_[i][j] = worldTransform;
+				worldTransformBlocks_[i][j]->translation_ = mapChipFiled_->GetMapChipPositionByIndex(j, i);
+			}
+		}
+	}
 }
