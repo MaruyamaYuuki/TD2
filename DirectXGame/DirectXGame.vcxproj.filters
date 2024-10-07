@@ -19,7 +19,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TransformEx.cpp" />
-    <ClCompile Include="MapChipFiled.cpp" />
+    <ClCompile Include="MapChipField.cpp" />
+
     <ClCompile Include="Hurdle.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
@@ -29,7 +30,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="GameScene.h" />
-    <ClInclude Include="MapChipFiled.h" />
+    <ClInclude Include="MapChipField.h" />
+
     <ClInclude Include="Hurdle.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>

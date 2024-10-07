@@ -114,7 +114,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TransformEx.cpp" />
-    <ClCompile Include="MapChipFiled.cpp" />
+    <ClCompile Include="MapChipField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
@@ -198,7 +198,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="GameScene.h" />
-    <ClInclude Include="MapChipFiled.h" />
+    <ClInclude Include="MapChipField.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

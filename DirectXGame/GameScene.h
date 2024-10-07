@@ -9,7 +9,7 @@
 #include "base/DirectXCommon.h"
 #include "input/Input.h"
 #include "Player.h"
-#include "MapChipFiled.h"
+#include "MapChipField.h"
 #include "3d/ObjectColor.h"
 #include "Hurdle.h"
 
@@ -67,7 +67,7 @@ private:
 	Player* player_ = nullptr;
 	KamataEngine::Model* modelPlayer_ = nullptr;
 
-	MapChipFiled* mapChipFiled_;
+	MapChipField* mapChipField_;
 	KamataEngine::Model* modelBlock_ = nullptr;
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
 

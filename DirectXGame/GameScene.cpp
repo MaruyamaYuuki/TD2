@@ -14,7 +14,7 @@ GameScene::~GameScene() {
 	hurdles_.clear();
 	delete modelHurdle_;
 	// マップチップフィールドの解放
-	delete mapChipFiled_; 
+	delete mapChipField_; 
 	delete modelBlock_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -37,8 +37,8 @@ void GameScene::Initialize() {
 
 	// マップチップフィールドの生成と初期化
 	modelBlock_ = Model::CreateFromOBJ("block", true);
-	mapChipFiled_ = new MapChipFiled;
-	mapChipFiled_->LoadMapChipCsv("Resources/map.csv");
+	mapChipField_ = new MapChipField;
+	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
 	// 障害物のモデルの生成
 	modelHurdle_ = Model::CreateFromOBJ("block", true);
@@ -134,8 +134,8 @@ void GameScene::Draw() {
 
 void GameScene::GenerateBlocks() {
 	// 要素数
-	uint32_t numBlockVirtical = mapChipFiled_->GetNumBlockVirtical();
-	uint32_t numBlockHorizontal = mapChipFiled_->GetNumBlockHorizontal();
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 	// 要素数を変更する
 	worldTransformBlocks_.resize(numBlockVirtical);
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
@@ -146,20 +146,20 @@ void GameScene::GenerateBlocks() {
 	// ブロックの生成
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
-			if (mapChipFiled_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
-				worldTransformBlocks_[i][j]->translation_ = mapChipFiled_->GetMapChipPositionByIndex(j, i);
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
 			}
 		}
 	}
 
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
-			if (mapChipFiled_->GetMapChipTypeByIndex(j, i) == MapChipType::kHurdle) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kHurdle) {
 				Hurdle* newHurdle = new Hurdle();
-				Vector3 hurdlePosition = mapChipFiled_->GetMapChipPositionByIndex(j, i);
+				Vector3 hurdlePosition = mapChipField_->GetMapChipPositionByIndex(j, i);
 				newHurdle->Initialize(modelHurdle_, &camera_, hurdlePosition);
 				hurdles_.push_back(newHurdle);
 			}

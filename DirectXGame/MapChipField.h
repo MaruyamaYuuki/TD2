@@ -17,7 +17,7 @@ struct MapChipData {
 /// <summary>
 /// マップチップフィールド
 /// </summary>
-class MapChipFiled {
+class MapChipField {
 
 public:
 	struct IndexSet {
