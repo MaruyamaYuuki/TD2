@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "MapChipFiled.h"
 #include "3d/ObjectColor.h"
+#include "Hurdle.h"
 
     /// <summary>
     /// ゲームシーン
@@ -47,6 +48,16 @@ public:
     /// </summary>
 	void GenerateBlocks();
 
+    /// <summary>
+    /// すべての当たり判定
+    /// </summary>
+	void CheckAllCollision();
+
+    /// <summary>
+    /// 衝突応答
+    /// </summary>
+	bool IsCollision(const AABB& aabb1, const AABB& aabb2);
+
 private:
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
 	KamataEngine::Input* input_ = nullptr;
@@ -59,6 +70,9 @@ private:
 	MapChipFiled* mapChipFiled_;
 	KamataEngine::Model* modelBlock_ = nullptr;
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
+
+	std::list<Hurdle*> hurdles_;
+	KamataEngine::Model* modelHurdle_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
