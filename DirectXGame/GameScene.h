@@ -13,6 +13,8 @@
 #include "3d/ObjectColor.h"
 #include "Hurdle.h"
 #include "Goal.h"
+#include "CameraController.h"
+#include "3d/DebugCamera.h"
 
     /// <summary>
     /// ゲームシーン
@@ -78,6 +80,11 @@ private:
 	std::list<Goal*> goals_;
 	KamataEngine::Model* modelGoal_ = nullptr;
 
+	CameraController* cameraController_ = nullptr;
+	// デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
+	// デバッグカメラ
+	KamataEngine::DebugCamera* debugCamera_ = nullptr;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
