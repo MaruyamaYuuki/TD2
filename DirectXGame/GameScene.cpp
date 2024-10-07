@@ -150,7 +150,12 @@ void GameScene::GenerateBlocks() {
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
-				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+				// 元の座標を取得してからオフセットを適用
+				Vector3 originalPosition = mapChipField_->GetMapChipPositionByIndex(j, i);
+				originalPosition.x -= 1.0f; // xに-1のオフセット
+				originalPosition.y -= 3.0f; // yに+3のオフセット
+
+				worldTransformBlocks_[i][j]->translation_ = originalPosition;
 			}
 		}
 	}
