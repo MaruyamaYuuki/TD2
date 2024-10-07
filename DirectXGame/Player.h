@@ -34,6 +34,10 @@ public:
 	// ゲームスタートのsetter
 	bool setIsGameStart(bool start) { return isGameStart_ = start; }
 
+	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
+
+	const KamataEngine::Vector3& GetVelocity() const { return move_; }
+
 private:
 	KamataEngine::Input* input_ = nullptr;
 	KamataEngine::Model* model_ = nullptr;
