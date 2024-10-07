@@ -38,7 +38,7 @@ void GameScene::Initialize() {
 	// マップチップフィールドの生成と初期化
 	modelBlock_ = Model::CreateFromOBJ("block", true);
 	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/map.csv");
+	mapChipField_->LoadMapChipCsv("Resources/testStage.csv");
 
 	// 障害物のモデルの生成
 	modelHurdle_ = Model::CreateFromOBJ("block", true);
@@ -150,7 +150,12 @@ void GameScene::GenerateBlocks() {
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
-				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+				// 元の座標を取得してからオフセットを適用
+				Vector3 originalPosition = mapChipField_->GetMapChipPositionByIndex(j, i);
+				originalPosition.x -= 1.0f; // xに-1のオフセット
+				originalPosition.y -= 9.0f; // yに+3のオフセット
+
+				worldTransformBlocks_[i][j]->translation_ = originalPosition;
 			}
 		}
 	}
@@ -159,7 +164,10 @@ void GameScene::GenerateBlocks() {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
 			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kHurdle) {
 				Hurdle* newHurdle = new Hurdle();
+				// 元の座標を取得してからオフセットを適用
 				Vector3 hurdlePosition = mapChipField_->GetMapChipPositionByIndex(j, i);
+				hurdlePosition.x -= 1.0f; // xに-1のオフセット
+				hurdlePosition.y -= 9.0f; // yに+3のオフセット
 				newHurdle->Initialize(modelHurdle_, &camera_, hurdlePosition);
 				hurdles_.push_back(newHurdle);
 			}
