@@ -11,6 +11,8 @@
 #include "Player.h"
 #include "MapChipFiled.h"
 #include "3d/ObjectColor.h"
+#include "CameraController.h"
+#include "3d/DebugCamera.h"
 
     /// <summary>
     /// ゲームシーン
@@ -60,6 +62,11 @@ private:
 	KamataEngine::Model* modelBlock_ = nullptr;
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
 
+	CameraController* cameraController_ = nullptr;
+	// デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
+	// デバッグカメラ
+	KamataEngine::DebugCamera* debugCamera_ = nullptr;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
