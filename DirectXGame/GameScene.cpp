@@ -54,6 +54,13 @@ void GameScene::Initialize() {
 	// ゴールのモデル生成
 	modelGoal_ = Model::CreateFromOBJ("block", true);
 
+	// プレイヤー初期化
+	modelPlayer_ = Model::CreateFromOBJ("player");
+	player_ = new Player();
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 16);
+	player_->Initialize(modelPlayer_, &camera_, playerPosition);
+	player_->SetMapChipField(mapChipField_);
+
 	// カメラコントローラの生成
 	cameraController_ = new CameraController();
 	// カメラコントローラの初期化
@@ -69,13 +76,6 @@ void GameScene::Initialize() {
 
 
 	GenerateBlocks();
-
-	// プレイヤー初期化
-	modelPlayer_ = Model::CreateFromOBJ("player");
-	player_ = new Player();
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 16);
-	player_->Initialize(modelPlayer_, &camera_, playerPosition);
-	player_->SetMapChipField(mapChipField_);
 }
 
 void GameScene::Update() { 
