@@ -42,7 +42,7 @@ private:
 	// 追従対象のカメラの座標の差（オフセット）
 	KamataEngine::Vector3 targetOffset_ = {0, 0, -15.0f};
 	// カメラ移動範囲
-	Rect movebleArea_ = {0, 100, 0, 100};
+	Rect movebleArea_ = {-10.0f, 100.0f, 10.0f, 50.0f};
 	// カメラの目標座標
 	KamataEngine::Vector3 goalPos;
 	// 座標補間割合

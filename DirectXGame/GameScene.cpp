@@ -69,7 +69,7 @@ void GameScene::Initialize() {
 	// リセット
 	cameraController_->Reset();
 	//
-	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	CameraController::Rect cameraArea = {10.0f, 100 - 12.0f, 4.5f, 9.5f};
 	//
 	cameraController_->SetMovebleaArea(cameraArea);
 
