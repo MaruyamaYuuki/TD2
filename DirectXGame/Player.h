@@ -83,13 +83,30 @@ private:
 	// 移動用Vector3
 	KamataEngine::Vector3 move_ = { 0.0f, 0.0f, 0.0f };
 
-	// 落下方向
-	bool isDownFall = false;
+	// 上下
+	enum class UDDirection {
+		kUp,
+		kDown,
+	};
+
+	// 上下
+	UDDirection udDirection_ = UDDirection::kDown;
+
+	// 回転タイマー
+	float turnTimer_ = 0.0f;
+	// 回転完了までの時間
+	float kTimeTurn_ = 0.5f;
+	// 初期角度
+	float turnFirstRotationX_ = 0.0f;
+	float turnFirstRotationY_ = 0.0f;
+
+	// 初期の落下方向
+	bool isDownFall = true;
 
 	// 横移動の上限速度(変更可)
-	const float kMaxLimitSpeed_ = 0.2f;
+	const float kMaxLimitSpeed_ = 0.1f;
 	// 落下速度の上限速度(変更可)
-	const float kMaxLimitFallSpeed_ = 0.8f;
+	const float kMaxLimitFallSpeed_ = 0.4f;
 	// 移動関数(Updateに入れる)
 	void Move();
 
@@ -107,7 +124,15 @@ private:
 	void MapCollisionUpside(CollisionMapInfo& info);
 	void MapCollisionUnderside(CollisionMapInfo& info);
 	void MapCollisionLeftside(CollisionMapInfo& info);
+	
+	// 上記の計算結果を反映
+	void ReturnMove(const CollisionMapInfo& info);
 
 	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
+
+	static inline const float kBlank = 1.0f;
+
+	// プレイヤーの生存状態
+	bool isDead_ = false;
 
 };

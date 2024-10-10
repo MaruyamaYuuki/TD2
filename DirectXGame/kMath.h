@@ -25,7 +25,7 @@ KamataEngine::Vector3& operator*=(KamataEngine::Vector3& v, float s);
 const KamataEngine::Vector3 operator*(const KamataEngine::Vector3& v, float s);
 
 // ease In-Out
-float easeInOut(float t, float x1, float x2);
+float easeInOut(float t, float firstP, float endP);
 
 // Lerp
 float Lerp(float x1, float x2, float t);
