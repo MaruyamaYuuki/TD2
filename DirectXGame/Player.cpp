@@ -103,7 +103,7 @@ void Player::Move() {
 	// 移動量をtranslationに加算
 	worldTransform_.translation_ += move_;
 	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, -19.0f, 19.0f);
-	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -19.0f, 19.0f);
+	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, 0.0f, 10.0f);
 	// スペースを押している間y座標を固定する
 	/* if (input_->PushKey(DIK_SPACE)) {
 		worldTransform_.translation_.y -= move_.y;

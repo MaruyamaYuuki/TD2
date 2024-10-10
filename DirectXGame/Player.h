@@ -61,7 +61,7 @@ public:
 	const KamataEngine::Vector3& GetVelocity() const { return move_; }
 
 	// ワールド座標を取得
-	Vector3 GetWorldPosition();
+	KamataEngine::Vector3 GetWorldPosition();
 
 	// AABBを取得
 	AABB GetAABB();
