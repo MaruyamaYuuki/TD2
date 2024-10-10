@@ -52,34 +52,6 @@ void GameScene::Initialize() {
 	// ゴールのモデル生成
 	modelGoal_ = Model::CreateFromOBJ("block", true);
 
-	// カメラコントローラの生成
-	cameraController_ = new CameraController();
-	// カメラコントローラの初期化
-	cameraController_->Initialize();
-	// 追従対象をセット
-	cameraController_->SetTarget(player_);
-	// リセット
-	cameraController_->Reset();
-	//
-	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
-	//
-	cameraController_->SetMovebleaArea(cameraArea);
-
-
-	// カメラコントローラの生成
-	cameraController_ = new CameraController();
-	// カメラコントローラの初期化
-	cameraController_->Initialize();
-	// 追従対象をセット
-	cameraController_->SetTarget(player_);
-	// リセット
-	cameraController_->Reset();
-	//
-	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
-	//
-	cameraController_->SetMovebleaArea(cameraArea);
-
-
 	GenerateBlocks();
 
 	// プレイヤー初期化
@@ -88,9 +60,34 @@ void GameScene::Initialize() {
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 16);
 	player_->Initialize(modelPlayer_, &camera_, playerPosition);
 	player_->SetMapChipField(mapChipField_);
+
+	cameraController_ = new CameraController();
+	// カメラコントローラの初期化
+	cameraController_->Initialize();
+	// 追従対象をセット
+	cameraController_->SetTarget(player_);
+	// リセット
+	cameraController_->Reset();
+	//
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	//
+	cameraController_->SetMovebleaArea(cameraArea);
+
+	debugCamera_ = new DebugCamera(1280, 720);
+
 }
 
 void GameScene::Update() { 
+
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_SPACE)) {
+		if (isDebugCameraActive_ == true)
+			isDebugCameraActive_ = false;
+		else
+			isDebugCameraActive_ = true;
+	}
+#endif
+
 	NextStage();
 	if (needStageReload) {
 		LoadStage();
