@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "base/TextureManager.h"
 #include <cassert>
+#include "2d/DebugText.h"
 
 using namespace KamataEngine;
 
@@ -40,9 +41,10 @@ void GameScene::Initialize() {
 
 
 	// マップチップフィールドの生成と初期化
+	stage = Stage::stage1;
 	modelBlock_ = Model::CreateFromOBJ("block", true);
 	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/testStage.csv");
+	LoadStage();
 
 	// 障害物のモデルの生成
 	modelHurdle_ = Model::CreateFromOBJ("block", true);
@@ -75,7 +77,12 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() { 
-
+	NextStage();
+	if (needStageReload) {
+		LoadStage();
+		GenerateBlocks();
+		needStageReload = false;
+	}
 	if (input_->TriggerKey(DIK_0)) {
 		player_->setIsGameStart(true);
 	}
@@ -257,4 +264,56 @@ bool GameScene::IsCollision(const AABB& aabb1, const AABB& aabb2) {
 
 void GameScene::CheckAllCollision() {
 
+}
+
+void GameScene::LoadStage() {
+	switch (stage) {
+	case Stage::stage1:
+		mapChipField_->LoadMapChipCsv("Resources/testStage1.csv");
+		break;
+	case Stage::stage2:
+		mapChipField_->LoadMapChipCsv("Resources/testStage.csv");
+		break;
+	case Stage::stage3:
+		mapChipField_->LoadMapChipCsv("Resources/testStage3.csv");
+		break;
+	case Stage::stage4:
+		mapChipField_->LoadMapChipCsv("Resources/testStage4.csv");
+		break;
+	default:
+		break;
+	}
+}
+
+void GameScene::NextStage() {
+    if (input_->PushKey(DIK_SPACE)) {
+    	switch (stage) {
+    	case Stage::stage1:
+			if (clear_[0]) {
+                stage = Stage::stage2;
+				needStageReload = true;
+			}
+    		break;
+    	case Stage::stage2:
+			if (clear_[1]) {
+				stage = Stage::stage3;
+				needStageReload = true;
+			}
+    		break;
+    	case Stage::stage3:
+			if (clear_[2]) {
+				stage = Stage::stage4;
+				needStageReload = true;
+			}
+    		break;
+    	case Stage::stage4:
+			if (clear_[3]) {
+				finished_ = true;
+				needStageReload = true;
+			}
+    		break;
+    	default:
+    		break;
+	    }
+    }
 }
