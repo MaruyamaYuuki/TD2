@@ -39,9 +39,11 @@ void GameScene::Initialize() {
 	audio_ = KamataEngine::Audio::GetInstance();
 	camera_.Initialize();
 
+	// ゲームプレイフェーズから開始
+	phase_ = Phase::kPlay;
 
 	// マップチップフィールドの生成と初期化
-	stage = Stage::stage1;
+	stage_ = Stage::stage1;
 	modelBlock_ = Model::CreateFromOBJ("block", true);
 	mapChipField_ = new MapChipField;
 	LoadStage();
@@ -77,55 +79,147 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() { 
-	NextStage();
-	if (needStageReload) {
-		LoadStage();
-		GenerateBlocks();
-		needStageReload = false;
-	}
-	if (input_->TriggerKey(DIK_0)) {
-		player_->setIsGameStart(true);
-	}
-	// プレイヤー更新
-	player_->Update();
 
-	// 障害物の更新
-	for (Hurdle* hurdle : hurdles_) {
-		hurdle->Update();
-	}
+	switch (phase_) {
+	case GameScene::Phase::kPlay:
+    	if (input_->TriggerKey(DIK_0)) {
+    		player_->setIsGameStart(true);
+    	}
+    	// プレイヤー更新
+    	player_->Update();
 
-	// ゴールの更新
-	for (Goal* goal : goals_) {
-		goal->Update();
-	}
+    	// 障害物の更新
+    	for (Hurdle* hurdle : hurdles_) {
+     		hurdle->Update();
+    	}
 
-	// ブロックの更新
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-			if (!worldTransformBlock) {
-				continue;
-			}
-			worldTransformBlock->UpdateMatrix();
+    	// ゴールの更新
+    	for (Goal* goal : goals_) {
+     		goal->Update();
+    	}
+
+    	// ブロックの更新
+    	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+    		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+    			if (!worldTransformBlock) {
+    				continue;
+    			}
+    			worldTransformBlock->UpdateMatrix();
+    		}
+    	}
+
+    	// カメラコントローラの更新
+    	cameraController_->Update();
+
+    	// カメラ処理
+    	if (isDebugCameraActive_) {
+    		// デバッグカメラの更新
+    		debugCamera_->Update();
+    		camera_.matView = debugCamera_->GetCamera().matView;
+    		camera_.matProjection = debugCamera_->GetCamera().matProjection;
+    		// ビュープロジェクション行列の転送
+    		camera_.TransferMatrix();
+    	} else {
+    		camera_.matView = cameraController_->GetViewProjection().matView;
+    		camera_.matProjection = cameraController_->GetViewProjection().matProjection;
+    		// ビュープロジェクション行列の更新と転送
+    		camera_.TransferMatrix();
+    	}
+
+		// 全ての当たり判定を行う
+		CheckAllCollision();
+		break;
+	case GameScene::Phase::kClear:
+		// 障害物の更新
+		for (Hurdle* hurdle : hurdles_) {
+			hurdle->Update();
 		}
+
+		// ゴールの更新
+		for (Goal* goal : goals_) {
+			goal->Update();
+		}
+
+		// ブロックの更新
+		for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+			for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+				if (!worldTransformBlock) {
+					continue;
+				}
+				worldTransformBlock->UpdateMatrix();
+			}
+		}
+
+		// カメラコントローラの更新
+		cameraController_->Update();
+
+		// カメラ処理
+		if (isDebugCameraActive_) {
+			// デバッグカメラの更新
+			debugCamera_->Update();
+			camera_.matView = debugCamera_->GetCamera().matView;
+			camera_.matProjection = debugCamera_->GetCamera().matProjection;
+			// ビュープロジェクション行列の転送
+			camera_.TransferMatrix();
+		} else {
+			camera_.matView = cameraController_->GetViewProjection().matView;
+			camera_.matProjection = cameraController_->GetViewProjection().matProjection;
+			// ビュープロジェクション行列の更新と転送
+			camera_.TransferMatrix();
+		}
+
+    	NextStage();
+    	if (needStageReload) {
+    		LoadStage();
+    		GenerateBlocks();
+    		needStageReload = false;
+    		stageClear_ = false;
+    	}
+		break;
+	case GameScene::Phase::kDeath:
+		// 障害物の更新
+		for (Hurdle* hurdle : hurdles_) {
+			hurdle->Update();
+		}
+
+		// ゴールの更新
+		for (Goal* goal : goals_) {
+			goal->Update();
+		}
+
+		// ブロックの更新
+		for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+			for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+				if (!worldTransformBlock) {
+					continue;
+				}
+				worldTransformBlock->UpdateMatrix();
+			}
+		}
+
+		// カメラコントローラの更新
+		cameraController_->Update();
+
+		// カメラ処理
+		if (isDebugCameraActive_) {
+			// デバッグカメラの更新
+			debugCamera_->Update();
+			camera_.matView = debugCamera_->GetCamera().matView;
+			camera_.matProjection = debugCamera_->GetCamera().matProjection;
+			// ビュープロジェクション行列の転送
+			camera_.TransferMatrix();
+		} else {
+			camera_.matView = cameraController_->GetViewProjection().matView;
+			camera_.matProjection = cameraController_->GetViewProjection().matProjection;
+			// ビュープロジェクション行列の更新と転送
+			camera_.TransferMatrix();
+		}
+		break;
+	default:
+		break;
 	}
 
-	// カメラコントローラの更新
-	cameraController_->Update();
 
-	// カメラ処理
-	if (isDebugCameraActive_) {
-		// デバッグカメラの更新
-		debugCamera_->Update();
-		camera_.matView = debugCamera_->GetCamera().matView;
-		camera_.matProjection = debugCamera_->GetCamera().matProjection;
-		// ビュープロジェクション行列の転送
-		camera_.TransferMatrix();
-	} else {
-		camera_.matView = cameraController_->GetViewProjection().matView;
-		camera_.matProjection = cameraController_->GetViewProjection().matProjection;
-		// ビュープロジェクション行列の更新と転送
-		camera_.TransferMatrix();
-	}
 
 }
 
@@ -263,7 +357,7 @@ bool GameScene::IsCollision(const AABB& aabb1, const AABB& aabb2) {
 }
 
 void GameScene::CheckAllCollision() {
-	#pragma region 自キャラとゴールの当たり判定
+#pragma region 自キャラとゴールの当たり判定
 	{
 		// 判定1と2の座標
 		AABB aabb1, aabb2;
@@ -273,22 +367,23 @@ void GameScene::CheckAllCollision() {
 
 		// 自キャラと手の弾全ての当たり判定
 		for (Goal* goal : goals_) {
-    		aabb2 = goal->GetAABB();
+			aabb2 = goal->GetAABB();
 
-    		// AABB同士の交差判定
-     		if (IsCollision(aabb1, aabb2)) {
-    			// 自キャラの衝突時コールバックを呼び出す
-    			player_->CollisionGoal(goal);
-    			// 敵弾の衝突時コールバックを呼び出す
-    			goal->OnCollision(player_);
-    		}
-    	}
+			// AABB同士の交差判定
+			if (IsCollision(aabb1, aabb2)) {
+				// 自キャラの衝突時コールバックを呼び出す
+				player_->CollisionGoal(goal);
+				// 敵弾の衝突時コールバックを呼び出す
+				goal->OnCollision(player_);
+
+				stageClear_ = true;
+			}
+		}
 	}
-
 }
 
 void GameScene::LoadStage() {
-	switch (stage) {
+	switch (stage_) {
 	case Stage::stage1:
 		mapChipField_->LoadMapChipCsv("Resources/testStage1.csv");
 		break;
@@ -308,33 +403,44 @@ void GameScene::LoadStage() {
 
 void GameScene::NextStage() {
     if (input_->PushKey(DIK_SPACE)) {
-    	switch (stage) {
+    	switch (stage_) {
     	case Stage::stage1:
-			if (clear_[0]) {
-                stage = Stage::stage2;
-				needStageReload = true;
-			}
+			stage_ = Stage::stage2;
+			needStageReload = true;
     		break;
     	case Stage::stage2:
-			if (clear_[1]) {
-				stage = Stage::stage3;
-				needStageReload = true;
-			}
+			stage_ = Stage::stage3;
+			needStageReload = true;
     		break;
     	case Stage::stage3:
-			if (clear_[2]) {
-				stage = Stage::stage4;
-				needStageReload = true;
-			}
+			stage_ = Stage::stage4;
+			needStageReload = true;
     		break;
     	case Stage::stage4:
-			if (clear_[3]) {
-				finished_ = true;
-				needStageReload = true;
-			}
+			finished_ = true;
+			needStageReload = true;
     		break;
     	default:
     		break;
 	    }
     }
+}
+
+void GameScene::ChangePhase() {
+	switch (phase_) {
+	case GameScene::Phase::kPlay:
+		if (stageClear_) {
+			phase_ = Phase::kClear;
+		}
+		break;
+	case GameScene::Phase::kClear:
+		break;
+	case GameScene::Phase::kDeath:
+		if (input_->PushKey(DIK_SPACE)) {
+			finished_ = true;
+		}
+		break;
+	default:
+		break;
+	}
 }
