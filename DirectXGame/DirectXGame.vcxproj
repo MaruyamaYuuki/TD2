@@ -107,6 +107,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="Hurdle.cpp" />
     <ClCompile Include="kMath.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -193,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
+    <ClInclude Include="Goal.h" />
     <ClInclude Include="Hurdle.h" />
     <ClInclude Include="kMath.h" />
     <ClInclude Include="Player.h" />
