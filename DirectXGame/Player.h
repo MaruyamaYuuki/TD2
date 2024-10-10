@@ -30,7 +30,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position, const KamataEngine::Vector3& maxMoveableArea);
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -80,6 +80,9 @@ private:
 	// ゲームが始まっているかのフラグ(変更不可)
 	bool isGameStart_ = false;
 
+	// 最大移動距離
+	KamataEngine::Vector3 maxMoveableArea_ = {0.0f, 0.0f, 0.0f};
+
 	// 移動用Vector3
 	KamataEngine::Vector3 move_ = { 0.0f, 0.0f, 0.0f };
 
@@ -95,7 +98,7 @@ private:
 	// 回転タイマー
 	float turnTimer_ = 0.0f;
 	// 回転完了までの時間
-	float kTimeTurn_ = 0.5f;
+	float kTimeTurn_ = 0.4f;
 	// 初期角度
 	float turnFirstRotationX_ = 0.0f;
 	float turnFirstRotationY_ = 0.0f;
