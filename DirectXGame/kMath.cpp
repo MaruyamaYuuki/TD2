@@ -31,12 +31,12 @@ const Vector3 operator*(const Vector3& v, float s) {
 };
 
 // ease In-Out
-float easeInOut(float t, float x1, float x2) {
+float easeInOut(float t, float firstP, float endP) {
 	float x;
 	// easeOut
 	float easedT = -(cos(float(M_PI * t)) - 1.0f) / 2.0f;
 
-	x = (1.0f - easedT) * x1 + easedT * x2;
+	x = (1.0f - easedT) * firstP + easedT * endP;
 	return x;
 };
 
