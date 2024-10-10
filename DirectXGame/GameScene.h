@@ -10,7 +10,6 @@
 #include "input/Input.h"
 #include "Player.h"
 #include "MapChipField.h"
-#include "3d/ObjectColor.h"
 #include "Hurdle.h"
 #include "Goal.h"
 #include "CameraController.h"
@@ -61,6 +60,11 @@ public:
     /// </summary>
 	bool IsCollision(const AABB& aabb1, const AABB& aabb2);
 
+    /// <summary>
+    /// 終了フラグのgetter
+    /// </summary>
+	bool IsFinished() const { return finished_; }
+
 private:
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
 	KamataEngine::Input* input_ = nullptr;
@@ -85,9 +89,10 @@ private:
 	bool isDebugCameraActive_ = false;
 	// デバッグカメラ
 	KamataEngine::DebugCamera* debugCamera_ = nullptr;
+	// 終了フラグ
+	bool finished_ = false;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	// ビュープロジェクション
-
 };
