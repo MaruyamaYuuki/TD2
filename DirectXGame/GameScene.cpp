@@ -44,6 +44,8 @@ void GameScene::Initialize() {
 	stage = Stage::stage1;
 	modelBlock_ = Model::CreateFromOBJ("block", true);
 	mapChipField_ = new MapChipField;
+	//mapChipField_->LoadMapChipCsv("Resources/map.csv");
+	mapChipField_->LoadMapChipCsv("Resources/testStage.csv");
 	LoadStage();
 
 	// 障害物のモデルの生成
