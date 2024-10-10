@@ -8,7 +8,7 @@
 
 using namespace KamataEngine;
 
-void Player::Initialize(Model* model, Camera* camera, const Vector3& position) { 
+void Player::Initialize(Model* model, Camera* camera, const Vector3& position, const Vector3& maxMoveableArea) { 
 	assert(model);
 	input_ = KamataEngine::Input::GetInstance();
 	model_ = model;
@@ -16,6 +16,7 @@ void Player::Initialize(Model* model, Camera* camera, const Vector3& position) {
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+	maxMoveableArea_ = maxMoveableArea;
 	camera_ = camera;
 }
 
@@ -102,8 +103,8 @@ void Player::Move() {
 
 	// 移動量をtranslationに加算
 	worldTransform_.translation_ += move_;
-	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, -19.0f, 19.0f);
-	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, 0.0f, 10.0f);
+	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, 0.0f, maxMoveableArea_.x);
+	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, 0.0f, maxMoveableArea_.y);
 	// スペースを押している間y座標を固定する
 	/* if (input_->PushKey(DIK_SPACE)) {
 		worldTransform_.translation_.y -= move_.y;
@@ -213,17 +214,17 @@ void Player::MapCollisionUpside(CollisionMapInfo& info) {
 	}
 	// ブロックにヒット
 	if (hit) {
-		//// 現在座標が壁の外か判定
-		//MapChipField::IndexSet indexSetNow;
-		//indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
-		//if (indexSetNow.yIndex != indexSet.yIndex) {
-		//	// めり込みを排除する方向に移動量を設定する
-		//	indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.MovePoint + Vector3(0, +kHeight / 2.0f, 0));
-		//	// めり込み先のブロックの範囲矩形
-		//	MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		//	info.MovePoint.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
-		//	move_.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
-		//}
+		// 現在座標が壁の外か判定
+		MapChipField::IndexSet indexSetNow;
+		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
+		if (indexSetNow.yIndex != indexSet.yIndex) {
+			// めり込みを排除する方向に移動量を設定する
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.MovePoint + Vector3(0, +kHeight / 2.0f, 0));
+			// めり込み先のブロックの範囲矩形
+			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+			info.MovePoint.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
+			move_.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
+		}
 	}
 }
 
@@ -234,11 +235,11 @@ void Player::MapCollisionLeftside(CollisionMapInfo& info) {
 	}
 
 	std::array<Vector3, kNumCorner> positionNew;
-	std::array<Vector3, kNumCorner> positionNewY;
+	//std::array<Vector3, kNumCorner> positionNewY;
 
 	for (uint32_t i = 0; i < positionNew.size(); ++i) {
-		positionNew[i] = CornerPosition(worldTransform_.translation_ + info.MovePoint, static_cast<Corner>(i));
-		positionNewY[i] = CornerPosition(worldTransform_.translation_, static_cast<Corner>(i));
+		positionNew[i] = CornerPosition(worldTransform_.translation_ /*+ info.MovePoint*/, static_cast<Corner>(i));
+		//positionNewY[i] = CornerPosition(worldTransform_.translation_, static_cast<Corner>(i));
 	}
 
 	MapChipType mapChipType;
@@ -247,19 +248,19 @@ void Player::MapCollisionLeftside(CollisionMapInfo& info) {
 	// 左上点の判定
 
 	MapChipField::IndexSet indexSet;
-	MapChipField::IndexSet indexSetY;
+	//MapChipField::IndexSet indexSetY;
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kLeftTop]);
-	indexSetY = mapChipField_->GetMapChipIndexSetByPosition(positionNewY[kLeftTop]);
-	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSetY.yIndex);
-	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex + 1, indexSetY.yIndex);
+	//indexSetY = mapChipField_->GetMapChipIndexSetByPosition(positionNewY[kLeftTop]);
+	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex + 1, indexSet.yIndex);
 	if (mapChipType == MapChipType::kHurdle && mapChipTypeNext != MapChipType::kHurdle) {
 		hit = true;
 	}
 	// 左下点の判定
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kLeftBottom]);
-	indexSetY = mapChipField_->GetMapChipIndexSetByPosition(positionNewY[kLeftBottom]);
-	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSetY.yIndex);
-	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex + 1, indexSetY.yIndex);
+	//indexSetY = mapChipField_->GetMapChipIndexSetByPosition(positionNewY[kLeftBottom]);
+	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex + 1, indexSet.yIndex);
 	if (mapChipType == MapChipType::kHurdle && mapChipTypeNext != MapChipType::kHurdle) {
 		hit = true;
 	}
