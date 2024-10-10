@@ -15,9 +15,16 @@
 #include "CameraController.h"
 #include "3d/DebugCamera.h"
 
-    /// <summary>
-    /// ゲームシーン
-    /// </summary>
+enum class Stage {
+	stage1 = 0,
+	stage2,
+	stage3,
+	stage4,
+};
+
+/// <summary>
+/// ゲームシーン
+/// </summary>
 class GameScene {
 public:
 	/// <summary>
@@ -65,6 +72,10 @@ public:
     /// </summary>
 	bool IsFinished() const { return finished_; }
 
+	void LoadStage();
+
+	void NextStage();
+
 private:
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
 	KamataEngine::Input* input_ = nullptr;
@@ -91,6 +102,11 @@ private:
 	KamataEngine::DebugCamera* debugCamera_ = nullptr;
 	// 終了フラグ
 	bool finished_ = false;
+	// シーン
+	Stage stage = Stage::stage1;
+	// ステージクリアフラグ
+	bool clear_[4] = {false};
+	bool needStageReload = false;
 
 	/// <summary>
 	/// ゲームシーン用
