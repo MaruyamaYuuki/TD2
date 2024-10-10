@@ -72,9 +72,20 @@ public:
     /// </summary>
 	bool IsFinished() const { return finished_; }
 
+	/// <summary>
+	/// ステージの読み込み
+	/// </summary>
 	void LoadStage();
 
+	/// <summary>
+	/// 次のステージへの移行
+	/// </summary>
 	void NextStage();
+
+    /// <summary>
+    /// フェース変更
+    /// </summary>
+	void ChangePhase();
 
 private:
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
@@ -100,13 +111,23 @@ private:
 	bool isDebugCameraActive_ = false;
 	// デバッグカメラ
 	KamataEngine::DebugCamera* debugCamera_ = nullptr;
+
 	// 終了フラグ
 	bool finished_ = false;
-	// シーン
-	Stage stage = Stage::stage1;
+	// ステージ
+	Stage stage_ = Stage::stage1;
 	// ステージクリアフラグ
-	bool clear_[4] = {false};
+	bool stageClear_ = false;
 	bool needStageReload = false;
+
+	// ゲームのフェーズ
+	enum class Phase {
+		kPlay,
+		kClear,
+		kDeath,
+	};
+	// ゲームの現在のフェーズ
+	Phase phase_;
 
 	/// <summary>
 	/// ゲームシーン用
