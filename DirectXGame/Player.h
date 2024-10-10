@@ -11,6 +11,8 @@
 /// 
 /// </summary>
 
+class MapChipField;
+
 enum class fallDirection {
 	Up,
 	Down,
@@ -18,10 +20,15 @@ enum class fallDirection {
 
 class Player {
 public:
+	// マップとの当たり判定情報
+	struct CollisionMapInfo {
+		bool isWallHit = false;
+		KamataEngine::Vector3 MovePoint;
+	};
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position);
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -33,6 +40,19 @@ public:
 
 	// ゲームスタートのsetter
 	bool setIsGameStart(bool start) { return isGameStart_ = start; }
+
+	// 角
+	enum Corner {
+		kRightBottom, // 右下
+		kLeftBottom,  // 左下
+		kRightTop,    // 右上
+		kLeftTop,     // 左上
+
+		kNumCorner // 要素数
+	};
+
+	// マップチップの設定
+	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 
 	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
 
@@ -61,5 +81,22 @@ private:
 	const float kMaxLimitFallSpeed_ = 0.8f;
 	// 移動関数(Updateに入れる)
 	void Move();
+
+	/// マップチップの当たり判定
+	MapChipField* mapChipField_ = nullptr;
+
+	// キャラクターの当たり判定サイズ
+	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
+
+	// マップ当たり判定
+	void MapCollision(CollisionMapInfo& info);
+
+	// 上下左のマップ当たり判定(右スクロールのため右の当たり判定は除外)
+	void MapCollisionUpside(CollisionMapInfo& info);
+	void MapCollisionUnderside(CollisionMapInfo& info);
+	void MapCollisionLeftside(CollisionMapInfo& info);
+
+	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
 
 };
