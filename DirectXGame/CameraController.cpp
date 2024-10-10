@@ -27,8 +27,8 @@ void CameraController::Update() {
 	// 移動範囲制限
 	camera_.translation_.x = std::max(camera_.translation_.x, movebleArea_.left);
 	camera_.translation_.x = std::min(camera_.translation_.x, movebleArea_.right);
-	// camera_.translation_.y = std::max(viewProjection_.translation_.y, movableArea_.bottom);
-	// camera_.translation_.y = std::min(viewProjection_.translation_.y, movableArea_.top);
+	camera_.translation_.y = std::max(camera_.translation_.y, movebleArea_.bottom);
+	camera_.translation_.y = std::min(camera_.translation_.y, movebleArea_.top);
 
 	// 行列を更新する
 	camera_.UpdateMatrix();

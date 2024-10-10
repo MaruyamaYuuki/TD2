@@ -72,10 +72,11 @@ void GameScene::Initialize() {
 	// リセット
 	cameraController_->Reset();
 	//
-	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	CameraController::Rect cameraArea = {10.0f, 100 - 12.0f, 4.5f, 9.5f};
 	//
 	cameraController_->SetMovebleaArea(cameraArea);
 
+	debugCamera_ = new DebugCamera(1280, 720);
 
 	GenerateBlocks();
 }
@@ -169,6 +170,14 @@ void GameScene::Update() {
 			// ビュープロジェクション行列の更新と転送
 			camera_.TransferMatrix();
 		}
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_SPACE)) {
+		if (isDebugCameraActive_ == true)
+			isDebugCameraActive_ = false;
+		else
+			isDebugCameraActive_ = true;
+	}
+#endif
 
     	NextStage();
     	if (needStageReload) {
