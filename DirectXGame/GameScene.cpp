@@ -41,8 +41,7 @@ void GameScene::Initialize() {
 
 	// マップチップフィールドの生成と初期化
 	modelBlock_ = Model::CreateFromOBJ("block", true);
-	mapChipFiled_ = new MapChipField;
-	mapChipFiled_->LoadMapChipCsv("Resources/map.csv");
+	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/testStage.csv");
 
 	// 障害物のモデルの生成
@@ -56,9 +55,9 @@ void GameScene::Initialize() {
 	// プレイヤー初期化
 	modelPlayer_ = Model::CreateFromOBJ("player");
 	player_ = new Player();
-	Vector3 playerPosition = mapChipFiled_->GetMapChipPositionByIndex(1, 16);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 16);
 	player_->Initialize(modelPlayer_, &camera_, playerPosition);
-	player_->SetMapChipField(mapChipFiled_);
+	player_->SetMapChipField(mapChipField_);
 }
 
 void GameScene::Update() { 
