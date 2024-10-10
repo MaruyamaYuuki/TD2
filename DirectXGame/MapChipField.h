@@ -6,9 +6,10 @@
 #include "math/Vector3.h"
 
 enum class MapChipType {
-	kBlank, // 空白
-	kBlock, // ブロック
-	kHurdle,
+	kBlank,  // 空白
+	kBlock,  // ブロック
+	kHurdle, // 障害物
+	kGoal,   // ゴール
 };
 struct MapChipData {
 	std::vector<std::vector<MapChipType>> data;

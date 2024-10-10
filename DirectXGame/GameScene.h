@@ -12,6 +12,7 @@
 #include "MapChipField.h"
 #include "3d/ObjectColor.h"
 #include "Hurdle.h"
+#include "Goal.h"
 
     /// <summary>
     /// ゲームシーン
@@ -73,6 +74,9 @@ private:
 
 	std::list<Hurdle*> hurdles_;
 	KamataEngine::Model* modelHurdle_ = nullptr;
+
+	std::list<Goal*> goals_;
+	KamataEngine::Model* modelGoal_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用

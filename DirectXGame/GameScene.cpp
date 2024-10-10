@@ -16,6 +16,11 @@ GameScene::~GameScene() {
 	}
 	hurdles_.clear();
 	delete modelHurdle_;
+	// ゴールの解放
+	for (Goal* goal : goals_) {
+		delete goal;
+	}
+	goals_.clear();
 	// マップチップフィールドの解放
 	delete mapChipField_; 
 	delete modelBlock_;
@@ -46,6 +51,9 @@ void GameScene::Initialize() {
 	// 障害物のモデルの生成
 	modelHurdle_ = Model::CreateFromOBJ("block", true);
 
+	// ゴールのモデル生成
+	modelGoal_ = Model::CreateFromOBJ("block", true);
+
 	GenerateBlocks();
 }
 
@@ -60,6 +68,11 @@ void GameScene::Update() {
 	// 障害物の更新
 	for (Hurdle* hurdle : hurdles_) {
 		hurdle->Update();
+	}
+
+	// ゴールの更新
+	for (Goal* goal : goals_) {
+		goal->Update();
 	}
 
 	// ブロックの更新
@@ -105,6 +118,11 @@ void GameScene::Draw() {
 	// 障害物の描画
 	for (Hurdle* hurdle : hurdles_) {
 		hurdle->Draw();
+	}
+
+	// ゴールの描画
+	for (Goal* goal : goals_) {
+		goal->Draw();
 	}
 
 	// ブロックの描画
@@ -163,6 +181,7 @@ void GameScene::GenerateBlocks() {
 		}
 	}
 
+	// 障害物の生成
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
 			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kHurdle) {
@@ -173,6 +192,21 @@ void GameScene::GenerateBlocks() {
 				hurdlePosition.y -= 9.0f; // yに+3のオフセット
 				newHurdle->Initialize(modelHurdle_, &camera_, hurdlePosition);
 				hurdles_.push_back(newHurdle);
+			}
+		}
+	}
+
+	// ゴールの生成
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kHurdle) {
+				Goal* newGoal = new Goal();
+				// 元の座標を取得してからオフセットを適用
+				Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(j, i);
+				goalPosition.x -= 1.0f; // xに-1のオフセット
+				goalPosition.y -= 9.0f; // yに+3のオフセット
+				newGoal->Initialize(modelHurdle_, &camera_, goalPosition);
+				goals_.push_back(newGoal);
 			}
 		}
 	}
