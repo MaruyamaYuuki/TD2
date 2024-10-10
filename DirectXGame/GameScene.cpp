@@ -396,16 +396,13 @@ void GameScene::CheckAllCollision() {
 void GameScene::LoadStage() {
 	switch (stage_) {
 	case Stage::stage1:
-		mapChipField_->LoadMapChipCsv("Resources/testStage1.csv");
+		mapChipField_->LoadMapChipCsv("Resources/map/Stage1.csv");
 		break;
 	case Stage::stage2:
-		mapChipField_->LoadMapChipCsv("Resources/testStage.csv");
+		mapChipField_->LoadMapChipCsv("Resources/map/Stage.csv");
 		break;
 	case Stage::stage3:
-		mapChipField_->LoadMapChipCsv("Resources/testStage3.csv");
-		break;
-	case Stage::stage4:
-		mapChipField_->LoadMapChipCsv("Resources/testStage4.csv");
+		mapChipField_->LoadMapChipCsv("Resources/map/Stage3.csv");
 		break;
 	default:
 		break;
@@ -424,10 +421,6 @@ void GameScene::NextStage() {
 			needStageReload = true;
     		break;
     	case Stage::stage3:
-			stage_ = Stage::stage4;
-			needStageReload = true;
-    		break;
-    	case Stage::stage4:
 			finished_ = true;
 			needStageReload = true;
     		break;

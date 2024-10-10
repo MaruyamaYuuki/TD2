@@ -19,7 +19,6 @@ enum class Stage {
 	stage1 = 0,
 	stage2,
 	stage3,
-	stage4,
 };
 
 /// <summary>
