@@ -1,7 +1,7 @@
 #include "3d/Camera.h"
 #include "math/MathUtility.h"
 
-//class Player;
+class Player;
 
 /// <summery>
 /// カメラコントロール
@@ -27,7 +27,7 @@ public:
 	/// </summary>
 	void Update();
 
-	//void SetTarget(Player* target) { target_ = target; }
+	void SetTarget(Player* target) { target_ = target; }
 
 	const KamataEngine::Camera& GetViewProjection() const { return camera_; }
 
@@ -51,4 +51,6 @@ private:
 	static inline const float kVelocityBias = 30.0f;
 	// 追従対象の各方向へのカメラ移動範囲
 	static inline const Rect kMargin = {-5.0f, 5.0f, -4.0f, 4.0f};
+
+	Player* target_ = nullptr;
 };

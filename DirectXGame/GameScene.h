@@ -10,12 +10,21 @@
 #include "input/Input.h"
 #include "Player.h"
 #include "MapChipField.h"
-#include "3d/ObjectColor.h"
 #include "Hurdle.h"
+#include "Goal.h"
+#include "CameraController.h"
+#include "3d/DebugCamera.h"
 
-    /// <summary>
-    /// ゲームシーン
-    /// </summary>
+enum class Stage {
+	stage1 = 0,
+	stage2,
+	stage3,
+	stage4,
+};
+
+/// <summary>
+/// ゲームシーン
+/// </summary>
 class GameScene {
 public:
 	/// <summary>
@@ -58,6 +67,15 @@ public:
     /// </summary>
 	bool IsCollision(const AABB& aabb1, const AABB& aabb2);
 
+    /// <summary>
+    /// 終了フラグのgetter
+    /// </summary>
+	bool IsFinished() const { return finished_; }
+
+	void LoadStage();
+
+	void NextStage();
+
 private:
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
 	KamataEngine::Input* input_ = nullptr;
@@ -74,9 +92,23 @@ private:
 	std::list<Hurdle*> hurdles_;
 	KamataEngine::Model* modelHurdle_ = nullptr;
 
+	std::list<Goal*> goals_;
+	KamataEngine::Model* modelGoal_ = nullptr;
+
+	CameraController* cameraController_ = nullptr;
+	// デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
+	// デバッグカメラ
+	KamataEngine::DebugCamera* debugCamera_ = nullptr;
+	// 終了フラグ
+	bool finished_ = false;
+	// シーン
+	Stage stage = Stage::stage1;
+	// ステージクリアフラグ
+	bool clear_[4] = {false};
+	bool needStageReload = false;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	// ビュープロジェクション
-
 };

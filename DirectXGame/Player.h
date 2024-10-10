@@ -5,6 +5,7 @@
 #include "input/input.h"	
 #include "kMath.h"
 #include "3d/ObjectColor.h"
+#include "AABB.h"
 
 /// <summary>
 /// プレイヤークラス
@@ -12,6 +13,7 @@
 /// </summary>
 
 class MapChipField;
+class Goal;
 
 enum class fallDirection {
 	Up,
@@ -53,6 +55,19 @@ public:
 
 	// マップチップの設定
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
+
+	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
+
+	const KamataEngine::Vector3& GetVelocity() const { return move_; }
+
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
+	// AABBを取得
+	AABB GetAABB();
+
+	// ゴールとの衝突応答
+	void CollisionGoal(const Goal* goal);
 
 private:
 	KamataEngine::Input* input_ = nullptr;
