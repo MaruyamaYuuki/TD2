@@ -263,6 +263,27 @@ bool GameScene::IsCollision(const AABB& aabb1, const AABB& aabb2) {
 }
 
 void GameScene::CheckAllCollision() {
+	#pragma region 自キャラとゴールの当たり判定
+	{
+		// 判定1と2の座標
+		AABB aabb1, aabb2;
+
+		// 自キャラの座標
+		aabb1 = player_->GetAABB();
+
+		// 自キャラと手の弾全ての当たり判定
+		for (Goal* goal : goals_) {
+    		aabb2 = goal->GetAABB();
+
+    		// AABB同士の交差判定
+     		if (IsCollision(aabb1, aabb2)) {
+    			// 自キャラの衝突時コールバックを呼び出す
+    			player_->CollisionGoal(goal);
+    			// 敵弾の衝突時コールバックを呼び出す
+    			goal->OnCollision(player_);
+    		}
+    	}
+	}
 
 }
 
