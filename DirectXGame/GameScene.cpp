@@ -7,6 +7,9 @@ using namespace KamataEngine;
 GameScene::GameScene() {}
 
 GameScene::~GameScene() { 
+	// プレイヤーの解放
+	delete player_;
+	delete modelPlayer_;
 	// 障害物の解放
 	for (Hurdle* hurdle : hurdles_) {
 		delete hurdle;
