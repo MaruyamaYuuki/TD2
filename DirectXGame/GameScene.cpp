@@ -7,7 +7,18 @@ using namespace KamataEngine;
 GameScene::GameScene() {}
 
 GameScene::~GameScene() { 
-	delete mapChipFiled_; 
+	// プレイヤーの解放
+	delete player_;
+	delete modelPlayer_;
+	// 障害物の解放
+	for (Hurdle* hurdle : hurdles_) {
+		delete hurdle;
+	}
+	hurdles_.clear();
+	delete modelHurdle_;
+	// マップチップフィールドの解放
+	delete mapChipField_; 
+	delete modelBlock_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			delete worldTransformBlock;
@@ -27,6 +38,10 @@ void GameScene::Initialize() {
 	modelBlock_ = Model::CreateFromOBJ("block", true);
 	mapChipFiled_ = new MapChipField;
 	mapChipFiled_->LoadMapChipCsv("Resources/map.csv");
+	mapChipField_->LoadMapChipCsv("Resources/testStage.csv");
+
+	// 障害物のモデルの生成
+	modelHurdle_ = Model::CreateFromOBJ("block", true);
 
 	GenerateBlocks();
 
@@ -45,6 +60,11 @@ void GameScene::Update() {
 	}
 	// プレイヤー更新
 	player_->Update();
+
+	// 障害物の更新
+	for (Hurdle* hurdle : hurdles_) {
+		hurdle->Update();
+	}
 
 	// ブロックの更新
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -86,7 +106,12 @@ void GameScene::Draw() {
 	//プレイヤー描画
 	player_->Draw();
 
-		// ブロックの描画/
+	// 障害物の描画
+	for (Hurdle* hurdle : hurdles_) {
+		hurdle->Draw();
+	}
+
+	// ブロックの描画
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
@@ -116,8 +141,8 @@ void GameScene::Draw() {
 
 void GameScene::GenerateBlocks() {
 	// 要素数
-	uint32_t numBlockVirtical = mapChipFiled_->GetNumBlockVirtical();
-	uint32_t numBlockHorizontal = mapChipFiled_->GetNumBlockHorizontal();
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 	// 要素数を変更する
 	worldTransformBlocks_.resize(numBlockVirtical);
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
@@ -128,12 +153,42 @@ void GameScene::GenerateBlocks() {
 	// ブロックの生成
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
-			if (mapChipFiled_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
 				WorldTransform* worldTransform = new WorldTransform();
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
-				worldTransformBlocks_[i][j]->translation_ = mapChipFiled_->GetMapChipPositionByIndex(j, i);
+				// 元の座標を取得してからオフセットを適用
+				Vector3 originalPosition = mapChipField_->GetMapChipPositionByIndex(j, i);
+				originalPosition.x -= 1.0f; // xに-1のオフセット
+				originalPosition.y -= 9.0f; // yに+3のオフセット
+
+				worldTransformBlocks_[i][j]->translation_ = originalPosition;
 			}
 		}
 	}
+
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kHurdle) {
+				Hurdle* newHurdle = new Hurdle();
+				// 元の座標を取得してからオフセットを適用
+				Vector3 hurdlePosition = mapChipField_->GetMapChipPositionByIndex(j, i);
+				hurdlePosition.x -= 1.0f; // xに-1のオフセット
+				hurdlePosition.y -= 9.0f; // yに+3のオフセット
+				newHurdle->Initialize(modelHurdle_, &camera_, hurdlePosition);
+				hurdles_.push_back(newHurdle);
+			}
+		}
+	}
+}
+
+bool GameScene::IsCollision(const AABB& aabb1, const AABB& aabb2) {
+	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) && (aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) && (aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z)) {
+		return true;
+	}
+	return false;
+}
+
+void GameScene::CheckAllCollision() {
+
 }
