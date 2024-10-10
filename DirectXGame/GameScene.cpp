@@ -33,20 +33,24 @@ void GameScene::Initialize() {
 	audio_ = KamataEngine::Audio::GetInstance();
 	camera_.Initialize();
 
-	// プレイヤー初期化
-	modelPlayer_ = Model::CreateFromOBJ("player");
-	player_ = new Player();
-	player_->Initialize(modelPlayer_, &camera_);
 
 	// マップチップフィールドの生成と初期化
 	modelBlock_ = Model::CreateFromOBJ("block", true);
-	mapChipField_ = new MapChipField;
+	mapChipFiled_ = new MapChipField;
+	mapChipFiled_->LoadMapChipCsv("Resources/map.csv");
 	mapChipField_->LoadMapChipCsv("Resources/testStage.csv");
 
 	// 障害物のモデルの生成
 	modelHurdle_ = Model::CreateFromOBJ("block", true);
 
 	GenerateBlocks();
+
+	// プレイヤー初期化
+	modelPlayer_ = Model::CreateFromOBJ("player");
+	player_ = new Player();
+	Vector3 playerPosition = mapChipFiled_->GetMapChipPositionByIndex(1, 16);
+	player_->Initialize(modelPlayer_, &camera_, playerPosition);
+	player_->SetMapChipField(mapChipFiled_);
 }
 
 void GameScene::Update() { 
