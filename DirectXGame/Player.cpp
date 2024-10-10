@@ -6,12 +6,13 @@
 
 using namespace KamataEngine;
 
-void Player::Initialize(Model* model, Camera* camera) { 
+void Player::Initialize(Model* model, Camera* camera, const Vector3& position) { 
 	assert(model);
 	input_ = KamataEngine::Input::GetInstance();
 	model_ = model;
 	objectColor_.Initialize();
 	worldTransform_.Initialize();
+	worldTransform_.translation_ = position;
 	camera_ = camera;
 }
 
@@ -90,7 +91,7 @@ Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
 
 void Player::MapCollisionUnderside(CollisionMapInfo& info) {
 	// 下降あり？
-	if (info.MovePoint.y >= 0) {
+	if (info.MovePoint.y <= 0) {
 		return;
 	}
 
@@ -120,13 +121,13 @@ void Player::MapCollisionUnderside(CollisionMapInfo& info) {
 
 	// ブロックにヒット？
 	if (hit) {
-		
+		move_.y = 0.0f;
 	}
 }
 
 void Player::MapCollisionUpside(CollisionMapInfo& info) {
 	// 上昇あり？
-	if (info.MovePoint.y <= 0) {
+	if (info.MovePoint.y >= 0) {
 		return;
 	}
 
@@ -158,7 +159,7 @@ void Player::MapCollisionUpside(CollisionMapInfo& info) {
 	}
 	// ブロックにヒット
 	if (hit) {
-
+		move_.y = 0.0f;
 	}
 }
 
