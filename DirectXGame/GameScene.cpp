@@ -50,6 +50,20 @@ void GameScene::Initialize() {
 	// ゴールのモデル生成
 	modelGoal_ = Model::CreateFromOBJ("block", true);
 
+	// カメラコントローラの生成
+	cameraController_ = new CameraController();
+	// カメラコントローラの初期化
+	cameraController_->Initialize();
+	// 追従対象をセット
+	cameraController_->SetTarget(player_);
+	// リセット
+	cameraController_->Reset();
+	//
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	//
+	cameraController_->SetMovebleaArea(cameraArea);
+
+
 	GenerateBlocks();
 
 	// プレイヤー初期化
@@ -87,6 +101,25 @@ void GameScene::Update() {
 			worldTransformBlock->UpdateMatrix();
 		}
 	}
+
+	// カメラコントローラの更新
+	cameraController_->Update();
+
+	// カメラ処理
+	if (isDebugCameraActive_) {
+		// デバッグカメラの更新
+		debugCamera_->Update();
+		camera_.matView = debugCamera_->GetCamera().matView;
+		camera_.matProjection = debugCamera_->GetCamera().matProjection;
+		// ビュープロジェクション行列の転送
+		camera_.TransferMatrix();
+	} else {
+		camera_.matView = cameraController_->GetViewProjection().matView;
+		camera_.matProjection = cameraController_->GetViewProjection().matProjection;
+		// ビュープロジェクション行列の更新と転送
+		camera_.TransferMatrix();
+	}
+
 }
 
 void GameScene::Draw() {
