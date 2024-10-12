@@ -84,7 +84,7 @@ private:
 	KamataEngine::Vector3 maxMoveableArea_ = {0.0f, 0.0f, 0.0f};
 
 	// 移動用Vector3
-	KamataEngine::Vector3 move_ = { 0.0f, 0.0f, 0.0f };
+	KamataEngine::Vector3 move_ = { 0.0f, 0.2f, 0.0f };
 
 	// 上下
 	enum class UDDirection {
@@ -120,22 +120,10 @@ private:
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
 
-	// マップ当たり判定
-	void MapCollision(CollisionMapInfo& info);
-
-	// 上下左のマップ当たり判定(右スクロールのため右の当たり判定は除外)
-	void MapCollisionUpside(CollisionMapInfo& info);
-	void MapCollisionUnderside(CollisionMapInfo& info);
-	void MapCollisionLeftside(CollisionMapInfo& info);
-	
-	// 上記の計算結果を反映
-	void ReturnMove(const CollisionMapInfo& info);
-
-	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
-
 	static inline const float kBlank = 1.0f;
 
 	// プレイヤーの生存状態
 	bool isDead_ = false;
 
+	bool isSwithGravity = false;
 };
