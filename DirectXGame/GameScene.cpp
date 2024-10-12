@@ -82,6 +82,7 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() { 
+	ChangePhase();
 
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
@@ -410,7 +411,7 @@ void GameScene::LoadStage() {
 }
 
 void GameScene::NextStage() {
-    if (input_->PushKey(DIK_SPACE)) {
+    if (input_->TriggerKey(DIK_SPACE)) {
     	switch (stage_) {
     	case Stage::stage1:
 			stage_ = Stage::stage2;
@@ -440,7 +441,7 @@ void GameScene::ChangePhase() {
 	case GameScene::Phase::kClear:
 		break;
 	case GameScene::Phase::kDeath:
-		if (input_->PushKey(DIK_SPACE)) {
+		if (input_->TriggerKey(DIK_SPACE)) {
 			finished_ = true;
 		}
 		break;
