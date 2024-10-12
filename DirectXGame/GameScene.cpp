@@ -400,7 +400,7 @@ void GameScene::LoadStage() {
 		mapChipField_->LoadMapChipCsv("Resources/map/Stage1.csv");
 		break;
 	case Stage::stage2:
-		mapChipField_->LoadMapChipCsv("Resources/map/Stage.csv");
+		mapChipField_->LoadMapChipCsv("Resources/map/Stage2.csv");
 		break;
 	case Stage::stage3:
 		mapChipField_->LoadMapChipCsv("Resources/map/Stage3.csv");
