@@ -348,7 +348,7 @@ void GameScene::GenerateBlocks() {
 	// ゴールの生成
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
-			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kHurdle) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kGoal) {
 				Goal* newGoal = new Goal();
 				// 元の座標を取得してからオフセットを適用
 				Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(j, i);

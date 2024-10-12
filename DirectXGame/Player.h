@@ -84,7 +84,7 @@ private:
 	KamataEngine::Vector3 maxMoveableArea_ = {0.0f, 0.0f, 0.0f};
 
 	// 移動用Vector3
-	KamataEngine::Vector3 move_ = { 0.0f, 0.2f, 0.0f };
+	KamataEngine::Vector3 move_ = { 0.0f, -0.2f, 0.0f };
 
 	// 上下
 	enum class UDDirection {
@@ -107,7 +107,7 @@ private:
 	bool isDownFall = true;
 
 	// 横移動の上限速度(変更可)
-	const float kMaxLimitSpeed_ = 0.1f;
+	const float kMaxLimitSpeed_ = 0.2f;
 	// 落下速度の上限速度(変更可)
 	const float kMaxLimitFallSpeed_ = 0.4f;
 	// 移動関数(Updateに入れる)

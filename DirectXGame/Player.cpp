@@ -35,7 +35,7 @@ void Player::Update() {
 
 void Player::Move() {
 	// 自動移動
-	move_.x += 0.01f;
+	move_.x += 0.02f;
 
 	// スペースを押して重力を反転
 	if (input_->TriggerKey(DIK_SPACE)) {
