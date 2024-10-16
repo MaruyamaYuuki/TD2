@@ -72,7 +72,7 @@ void GameScene::Initialize() {
 	// リセット
 	cameraController_->Reset();
 	//
-	CameraController::Rect cameraArea = {10.0f, 100 - 12.0f, 4.5f, 9.5f};
+	CameraController::Rect cameraArea = {10.0f, 65.0f, 4.5f, 9.5f};
 	//
 	cameraController_->SetMovebleaArea(cameraArea);
 
@@ -86,12 +86,15 @@ void GameScene::Update() {
 
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
-    	if (input_->TriggerKey(DIK_0)) {
+    	if (input_->TriggerKey(DIK_SPACE)) {
     		player_->setIsGameStart(true);
     	}
-    	// プレイヤー更新
-    	player_->Update();
+		if (input_->TriggerKey(DIK_ESCAPE)) {
+			finished_ = true;
+		}
 
+        // プレイヤー更新
+        player_->Update();
     	// 障害物の更新
     	for (Hurdle* hurdle : hurdles_) {
      		hurdle->Update();
@@ -172,7 +175,7 @@ void GameScene::Update() {
 			camera_.TransferMatrix();
 		}
 #ifdef _DEBUG
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_L)) {
 		if (isDebugCameraActive_ == true)
 			isDebugCameraActive_ = false;
 		else
@@ -392,6 +395,30 @@ void GameScene::CheckAllCollision() {
 			}
 		}
 	}
+#pragma endregion
+
+#pragma region 自キャラと障害物の当たり判定
+	{
+		// 判定1と2の座標
+		AABB aabb1, aabb2;
+
+		// 自キャラの座標
+		aabb1 = player_->GetAABB();
+
+		// 自キャラと手の弾全ての当たり判定
+		for (Hurdle* hurdle : hurdles_) {
+			aabb2 = hurdle->GetAABB();
+
+			// AABB同士の交差判定
+			if (IsCollision(aabb1, aabb2)) {
+				// 自キャラの衝突時コールバックを呼び出す
+				player_->CollisionHurdle(hurdle);
+				// 敵弾の衝突時コールバックを呼び出す
+				hurdle->OnCollision(player_);
+			}
+		}
+	}
+#pragma endregion
 }
 
 void GameScene::LoadStage() {
@@ -436,6 +463,8 @@ void GameScene::ChangePhase() {
 	case GameScene::Phase::kPlay:
 		if (stageClear_) {
 			phase_ = Phase::kClear;
+		} else if (player_->IsDead()) {
+			phase_ = Phase::kDeath;
 		}
 		break;
 	case GameScene::Phase::kClear:

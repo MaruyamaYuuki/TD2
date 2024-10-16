@@ -14,6 +14,7 @@
 
 class MapChipField;
 class Goal;
+class Hurdle;
 
 enum class fallDirection {
 	Up,
@@ -68,6 +69,14 @@ public:
 
 	// ゴールとの衝突応答
 	void CollisionGoal(const Goal* goal);
+
+	// 障害物との衝突応答
+	void CollisionHurdle(const Hurdle* hurdle);
+
+	// デスフラグのgetter
+	bool IsDead() const { return isDead_; }
+
+	bool IsGameStart() const { return isGameStart_; }
 
 private:
 	KamataEngine::Input* input_ = nullptr;

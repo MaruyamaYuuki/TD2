@@ -121,5 +121,10 @@ AABB Player::GetAABB() {
 
 
 void Player::CollisionGoal(const Goal* goal) {
-	(void)goal;
+	(void)goal; 
+}
+
+void Player::CollisionHurdle(const Hurdle* hurdle) { 
+	(void)hurdle; 
+	isDead_ = true;
 }
