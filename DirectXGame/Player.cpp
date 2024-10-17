@@ -8,13 +8,14 @@
 
 using namespace KamataEngine;
 
-void Player::Initialize(Model* model, Camera* camera, const Vector3& position, const Vector3& maxMoveableArea) { 
+void Player::Initialize(Model* model, Camera* camera, const Vector3& maxMoveableArea) { 
 	assert(model);
 	input_ = KamataEngine::Input::GetInstance();
 	model_ = model;
 	objectColor_.Initialize();
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = position;
+	worldTransform_.translation_ = {1.0f, 3.0f, 0.0f};
+	//worldTransform_.translation_ = position;
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 	maxMoveableArea_ = maxMoveableArea;
 	camera_ = camera;
@@ -38,7 +39,7 @@ void Player::Move() {
 	move_.x += 0.02f;
 
 	// スペースを押して重力を反転
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_SPACE) && !isGoal_) {
 		isSwithGravity = true;
 		isDownFall = !isDownFall;
 		if (udDirection_ != UDDirection::kUp) {
@@ -122,9 +123,21 @@ AABB Player::GetAABB() {
 
 void Player::CollisionGoal(const Goal* goal) {
 	(void)goal; 
+	isGoal_ = true;
 }
 
 void Player::CollisionHurdle(const Hurdle* hurdle) { 
 	(void)hurdle; 
 	isDead_ = true;
+}
+
+void Player::Reset() { 
+	worldTransform_.translation_ = {1.0f, 3.0f, 0.0f};
+	worldTransform_.rotation_.x = 0;
+	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+	worldTransform_.UpdateMatrix();
+
+	isGameStart_ = false;
+	isGoal_ = false;
+	isDead_ = false;
 }

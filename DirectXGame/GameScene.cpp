@@ -46,8 +46,6 @@ void GameScene::Initialize() {
 	stage_ = Stage::stage1;
 	modelBlock_ = Model::CreateFromOBJ("block", true);
 	mapChipField_ = new MapChipField;
-	//mapChipField_->LoadMapChipCsv("Resources/map.csv");
-	mapChipField_->LoadMapChipCsv("Resources/testStage.csv");
 	LoadStage();
 
 	// 障害物のモデルの生成
@@ -59,8 +57,8 @@ void GameScene::Initialize() {
 	// プレイヤー初期化
 	modelPlayer_ = Model::CreateFromOBJ("player");
 	player_ = new Player();
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 16);
-	player_->Initialize(modelPlayer_, &camera_, playerPosition, Vector3{78.0f, 9.0f, 0.0f});
+	//Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 16);
+	player_->Initialize(modelPlayer_, &camera_, Vector3{78.0f, 9.0f, 0.0f});
 	player_->SetMapChipField(mapChipField_);
 
 	// カメラコントローラの生成
@@ -137,6 +135,9 @@ void GameScene::Update() {
 		CheckAllCollision();
 		break;
 	case GameScene::Phase::kClear:
+		// プレイヤー更新
+		player_->Update();
+
 		// 障害物の更新
 		for (Hurdle* hurdle : hurdles_) {
 			hurdle->Update();
@@ -184,12 +185,7 @@ void GameScene::Update() {
 #endif
 
     	NextStage();
-    	if (needStageReload) {
-    		LoadStage();
-    		GenerateBlocks();
-    		needStageReload = false;
-    		stageClear_ = false;
-    	}
+
 		break;
 	case GameScene::Phase::kDeath:
 		// 障害物の更新
@@ -229,6 +225,16 @@ void GameScene::Update() {
 			// ビュープロジェクション行列の更新と転送
 			camera_.TransferMatrix();
 		}
+
+		if (input_->TriggerKey(DIK_UPARROW) || input_->TriggerKey(DIK_DOWNARROW)) {
+			if (!isSerect_) {
+				isSerect_ = true;
+			} else {
+				isSerect_ = false;
+			}
+		}
+
+		DebugText::GetInstance()->ConsolePrintf("Serect = %d\n", isSerect_);
 		break;
 	default:
 		break;
@@ -390,8 +396,6 @@ void GameScene::CheckAllCollision() {
 				player_->CollisionGoal(goal);
 				// 敵弾の衝突時コールバックを呼び出す
 				goal->OnCollision(player_);
-
-				stageClear_ = true;
 			}
 		}
 	}
@@ -422,6 +426,7 @@ void GameScene::CheckAllCollision() {
 }
 
 void GameScene::LoadStage() {
+	//mapChipField_->ResetMapChipData();
 	switch (stage_) {
 	case Stage::stage1:
 		mapChipField_->LoadMapChipCsv("Resources/map/Stage1.csv");
@@ -461,20 +466,73 @@ void GameScene::NextStage() {
 void GameScene::ChangePhase() {
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
-		if (stageClear_) {
+		if (player_->IsGoal()) {
 			phase_ = Phase::kClear;
 		} else if (player_->IsDead()) {
 			phase_ = Phase::kDeath;
 		}
 		break;
 	case GameScene::Phase::kClear:
+		if (needStageReload) {
+			// マップ関連のデータをリセット
+			mapChipField_->ResetMapChipData();
+
+			// 障害物、ゴール、ブロックのクリア
+			for (Hurdle* hurdle : hurdles_) {
+				delete hurdle;
+			}
+			hurdles_.clear();
+			for (Goal* goal : goals_) {
+				delete goal;
+			}
+			goals_.clear();
+			for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+				for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+					delete worldTransformBlock;
+				}
+			}
+			worldTransformBlocks_.clear();
+
+			// ステージをロード
+			LoadStage();
+			GenerateBlocks();
+
+			// プレイヤーのリセット
+			player_->Reset();
+
+			// ステージリロードフラグをリセット
+			needStageReload = false;
+			phase_ = Phase::kPlay;
+		}
 		break;
 	case GameScene::Phase::kDeath:
 		if (input_->TriggerKey(DIK_SPACE)) {
-			finished_ = true;
+			if (!isSerect_) {
+				// リスタート開始
+				isRestarting_ = true;
+				countdownTime_ = 3.0f; // カウントダウンをリセット
+			} else {
+				finished_ = true;
+			}
 		}
 		break;
+
 	default:
 		break;
+	}
+
+	// リスタート中の処理
+	if (isRestarting_) {
+		countdownTime_ -= deltaTime_; // deltaTime_ は経過時間を表す変数と仮定
+
+		if (countdownTime_ <= 0) {
+			// カウントダウンが終了したらゲームを再開
+			player_->Reset();
+			phase_ = Phase::kPlay;
+			isRestarting_ = false; // リスタート完了
+		} else {
+			// カウントダウンの表示などをここで行う
+			// 例: RenderCountdown(countdownTime_);
+		}
 	}
 }

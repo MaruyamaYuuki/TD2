@@ -31,7 +31,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position, const KamataEngine::Vector3& maxMoveableArea);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& maxMoveableArea);
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -77,6 +77,10 @@ public:
 	bool IsDead() const { return isDead_; }
 
 	bool IsGameStart() const { return isGameStart_; }
+
+	bool IsGoal() const { return isGoal_; }
+
+	void Reset();
 
 private:
 	KamataEngine::Input* input_ = nullptr;
@@ -135,4 +139,6 @@ private:
 	bool isDead_ = false;
 
 	bool isSwithGravity = false;
+
+	bool isGoal_ = false;
 };
