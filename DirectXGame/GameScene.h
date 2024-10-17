@@ -14,6 +14,7 @@
 #include "Goal.h"
 #include "CameraController.h"
 #include "3d/DebugCamera.h"
+#include "Fade.h"
 
 enum class Stage {
 	stage1 = 0,
@@ -121,12 +122,18 @@ private:
 
 	// ゲームのフェーズ
 	enum class Phase {
+		kFadeIn,  // フェードイン
+		kMain,    // メイン部
+		kFadeOut, // フェードアウト
 		kPlay,
 		kClear,
 		kDeath,
 	};
 	// ゲームの現在のフェーズ
 	Phase phase_;
+
+	// フェード
+	Fade* fade_ = nullptr;
 
 	bool isSerect_ = false;
 	float countdownTime_ = 1.0f; // カウントダウンの秒数

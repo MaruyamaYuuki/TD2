@@ -61,6 +61,11 @@ void GameScene::Initialize() {
 	player_->Initialize(modelPlayer_, &camera_, Vector3{78.0f, 9.0f, 0.0f});
 	player_->SetMapChipField(mapChipField_);
 
+	// フェードの作成
+	fade_ = new Fade();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 1.0f);
+
 	// カメラコントローラの生成
 	cameraController_ = new CameraController();
 	// カメラコントローラの初期化
@@ -133,6 +138,7 @@ void GameScene::Update() {
 
 		// 全ての当たり判定を行う
 		CheckAllCollision();
+		fade_->Update();
 		break;
 	case GameScene::Phase::kClear:
 		// プレイヤー更新
@@ -314,6 +320,7 @@ void GameScene::Draw() {
 	///< summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	fade_->Draw(commandList);
 
 	// スプライト描画後処理
 	KamataEngine::Sprite::PostDraw();
