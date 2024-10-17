@@ -14,6 +14,7 @@
 
 class MapChipField;
 class Goal;
+class Hurdle;
 
 enum class fallDirection {
 	Up,
@@ -30,7 +31,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position, const KamataEngine::Vector3& maxMoveableArea);
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& maxMoveableArea);
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -69,6 +70,18 @@ public:
 	// ゴールとの衝突応答
 	void CollisionGoal(const Goal* goal);
 
+	// 障害物との衝突応答
+	void CollisionHurdle(const Hurdle* hurdle);
+
+	// デスフラグのgetter
+	bool IsDead() const { return isDead_; }
+
+	bool IsGameStart() const { return isGameStart_; }
+
+	bool IsGoal() const { return isGoal_; }
+
+	void Reset();
+
 private:
 	KamataEngine::Input* input_ = nullptr;
 	KamataEngine::Model* model_ = nullptr;
@@ -84,7 +97,7 @@ private:
 	KamataEngine::Vector3 maxMoveableArea_ = {0.0f, 0.0f, 0.0f};
 
 	// 移動用Vector3
-	KamataEngine::Vector3 move_ = { 0.0f, 0.0f, 0.0f };
+	KamataEngine::Vector3 move_ = { 0.0f, -0.3f, 0.0f };
 
 	// 上下
 	enum class UDDirection {
@@ -107,7 +120,7 @@ private:
 	bool isDownFall = true;
 
 	// 横移動の上限速度(変更可)
-	const float kMaxLimitSpeed_ = 0.1f;
+	const float kMaxLimitSpeed_ = 0.2f;
 	// 落下速度の上限速度(変更可)
 	const float kMaxLimitFallSpeed_ = 0.4f;
 	// 移動関数(Updateに入れる)
@@ -120,22 +133,12 @@ private:
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
 
-	// マップ当たり判定
-	void MapCollision(CollisionMapInfo& info);
-
-	// 上下左のマップ当たり判定(右スクロールのため右の当たり判定は除外)
-	void MapCollisionUpside(CollisionMapInfo& info);
-	void MapCollisionUnderside(CollisionMapInfo& info);
-	void MapCollisionLeftside(CollisionMapInfo& info);
-	
-	// 上記の計算結果を反映
-	void ReturnMove(const CollisionMapInfo& info);
-
-	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
-
 	static inline const float kBlank = 1.0f;
 
 	// プレイヤーの生存状態
 	bool isDead_ = false;
 
+	bool isSwithGravity = false;
+
+	bool isGoal_ = false;
 };
