@@ -138,7 +138,9 @@ private:
 	bool isSerect_ = false;
 	float countdownTime_ = 1.0f; // カウントダウンの秒数
 	bool isRestarting_ = false;  // リスタート中かどうかを管理
-	float deltaTime_ = 1.0f / 60.0f;
+	float deltaTime_ = 0.1f;
+
+	bool isFading = false;
 
 	/// <summary>
 	/// ゲームシーン用
