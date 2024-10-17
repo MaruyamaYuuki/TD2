@@ -184,7 +184,17 @@ void GameScene::Update() {
 	}
 #endif
 
-    	NextStage();
+		if (input_->TriggerKey(DIK_UPARROW) || input_->TriggerKey(DIK_DOWNARROW)) {
+	    	if (!isSerect_) {
+				isSerect_ = true;
+			} else {
+				isSerect_ = false;
+			}
+	    }
+		DebugText::GetInstance()->ConsolePrintf("Serect = %d\n", isSerect_);
+		if (!isSerect_) {
+        	NextStage();
+		}
 
 		break;
 	case GameScene::Phase::kDeath:
@@ -460,7 +470,7 @@ void GameScene::NextStage() {
     	default:
     		break;
 	    }
-    }
+	}
 }
 
 void GameScene::ChangePhase() {
@@ -503,6 +513,8 @@ void GameScene::ChangePhase() {
 			// ステージリロードフラグをリセット
 			needStageReload = false;
 			phase_ = Phase::kPlay;
+		} else if (input_->TriggerKey(DIK_SPACE) && isSerect_) {
+			finished_ = true;
 		}
 		break;
 	case GameScene::Phase::kDeath:
