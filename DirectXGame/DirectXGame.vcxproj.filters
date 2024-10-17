@@ -23,6 +23,7 @@
     <ClCompile Include="Hurdle.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="Fade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="Hurdle.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Goal.h" />
+    <ClInclude Include="Fade.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Obj.hlsli" />
