@@ -2,19 +2,42 @@
 
 TitleScene::TitleScene() {}
 
-TitleScene::~TitleScene() {}
+TitleScene::~TitleScene() { 
+	delete fade_; 
+}
 
 void TitleScene::Initialize() {
 	dxCommon_ = KamataEngine::DirectXCommon::GetInstance();
 	input_ = KamataEngine::Input::GetInstance();
 	audio_ = KamataEngine::Audio::GetInstance();
+	fade_ = new Fade();
+	fade_->Initialize();
+	fade_->Start(Fade::Status::FadeIn, 1.0f);
 	camera_.Initialize();
 
 }
 
 void TitleScene::Update() { 
-	if (input_->TriggerKey(DIK_SPACE)) {
+	switch (phase_) {
+	case TitleScene::Phase::kFadeIn:
+		if (input_->TriggerKey(DIK_SPACE)) {
+			phase_ = Phase::kFadeOut;
+			fade_->Start(Fade::Status::FadeOut, 1.0f);
+			phase_ = Phase::kMain;
+		}
+		fade_->Update();
+		break;
+	case TitleScene::Phase::kMain:
+		fade_->Update();
+		if (fade_->IsFinished()) {
+			phase_ = Phase::kFadeOut;
+		}
+		break;
+	case TitleScene::Phase::kFadeOut:
 		finished_ = true;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -30,7 +53,7 @@ void TitleScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの処理を追加できる
 	/// </summary>
-
+	fade_->Draw(commandList);
 	// スプライト処理後描画
 	KamataEngine::Sprite::PostDraw();
 	// 深度バッファクリア

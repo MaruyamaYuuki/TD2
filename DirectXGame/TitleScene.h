@@ -6,12 +6,19 @@
 #include "3d/Camera.h"
 #include "3d/Model.h"
 #include "3d/ObjectColor.h"
+#include "Fade.h"
 
 /// <summary>
 /// タイトルシーン
 /// </summary>
 class TitleScene {
 public:
+	// シーンのフェーズ
+	enum class Phase {
+		kFadeIn,  // フェードイン
+		kMain,    // メイン部
+		kFadeOut, // フェードアウト
+	};
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -50,6 +57,12 @@ private:
 
 	// 終了フラグ
 	bool finished_ = false;
+
+	// 画面フェード
+	Fade* fade_ = nullptr;
+
+	// 現在のフェーズ
+	Phase phase_ = Phase::kFadeIn;
 
 	/// <summary>
 	/// タイトルシーン用
