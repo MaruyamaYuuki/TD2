@@ -129,7 +129,7 @@ private:
 	Phase phase_;
 
 	bool isSerect_ = false;
-	float countdownTime_ = 3.0f; // カウントダウンの秒数
+	float countdownTime_ = 1.0f; // カウントダウンの秒数
 	bool isRestarting_ = false;  // リスタート中かどうかを管理
 	float deltaTime_ = 1.0f / 60.0f;
 
