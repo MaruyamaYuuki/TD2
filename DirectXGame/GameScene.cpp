@@ -252,6 +252,9 @@ void GameScene::Update() {
 
 		DebugText::GetInstance()->ConsolePrintf("Serect = %d\n", isSerect_);
 		break;
+	case GameScene::Phase::kMain:
+		fade_->Update();
+		break;
 	default:
 		break;
 	}
@@ -531,7 +534,7 @@ void GameScene::ChangePhase() {
 				isRestarting_ = true;
 				countdownTime_ = 3.0f; // カウントダウンをリセット
 			} else {
-				finished_ = true;
+				phase_ = Phase::kFadeIn;
 			}
 		}
 
@@ -539,6 +542,19 @@ void GameScene::ChangePhase() {
 
 		}
 		break;
+	case GameScene::Phase::kFadeIn:
+		fade_->Start(Fade::Status::FadeOut, 1.0f);
+		phase_ = Phase::kMain;
+		break;
+	case GameScene::Phase::kMain:
+		if (fade_->IsFinished()) {
+			phase_ = Phase::kFadeOut;
+		}
+		break;
+	case GameScene::Phase::kFadeOut:
+		finished_ = true;
+		break;
+		
 
 	default:
 		break;
