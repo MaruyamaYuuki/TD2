@@ -49,10 +49,10 @@ void GameScene::Initialize() {
 	LoadStage();
 
 	// 障害物のモデルの生成
-	modelHurdle_ = Model::CreateFromOBJ("block", true);
+	modelHurdle_ = Model::CreateFromOBJ("hurdle", true);
 
 	// ゴールのモデル生成
-	modelGoal_ = Model::CreateFromOBJ("block", true);
+	modelGoal_ = Model::CreateFromOBJ("goal", true);
 
 	// プレイヤー初期化
 	modelPlayer_ = Model::CreateFromOBJ("player");
@@ -373,7 +373,7 @@ void GameScene::GenerateBlocks() {
 				Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(j, i);
 				goalPosition.x -= 1.0f; // xに-1のオフセット
 				goalPosition.y -= 9.0f; // yに+3のオフセット
-				newGoal->Initialize(modelHurdle_, &camera_, goalPosition);
+				newGoal->Initialize(modelGoal_, &camera_, goalPosition);
 				goals_.push_back(newGoal);
 			}
 		}
