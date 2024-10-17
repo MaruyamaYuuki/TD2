@@ -534,6 +534,10 @@ void GameScene::ChangePhase() {
 				finished_ = true;
 			}
 		}
+
+		if (isRestarting_) {
+
+		}
 		break;
 
 	default:
@@ -549,9 +553,6 @@ void GameScene::ChangePhase() {
 			player_->Reset();
 			phase_ = Phase::kPlay;
 			isRestarting_ = false; // リスタート完了
-		} else {
-			// カウントダウンの表示などをここで行う
-			// 例: RenderCountdown(countdownTime_);
 		}
 	}
 }
