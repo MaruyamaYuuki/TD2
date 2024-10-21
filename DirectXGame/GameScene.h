@@ -17,6 +17,7 @@
 #include "Fade.h"
 #include "base/TextureManager.h"
 #include "2d/Sprite.h"
+#include "UI.h"
 
 enum class Stage {
 	stage1 = 0,
@@ -155,6 +156,9 @@ private:
 	KamataEngine::Sprite* backSprite5_ = nullptr;
 
 	KamataEngine::Vector2 size_ = {1300.0f, 750.0f};
+	UI* ui_ = nullptr;
+
+	bool allClear = false;
 
 	/// <summary>
 	/// ゲームシーン用

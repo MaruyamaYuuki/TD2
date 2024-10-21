@@ -37,6 +37,8 @@ GameScene::~GameScene() {
 		}
 	}
 	worldTransformBlocks_.clear();
+
+	delete ui_;
 }
 
 void GameScene::Initialize() {
@@ -102,11 +104,16 @@ void GameScene::Initialize() {
 
 	debugCamera_ = new DebugCamera(1280, 720);
 
+	ui_ = new UI();
+	ui_->Initialize();
+	
 	GenerateBlocks();
 }
 
 void GameScene::Update() { 
 	ChangePhase();
+	ui_->Update(player_->IsDead(), player_->IsGoal());
+
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
     	if (input_->TriggerKey(DIK_SPACE)) {
@@ -215,16 +222,7 @@ void GameScene::Update() {
 			isDebugCameraActive_ = true;
 	}
 #endif
-
-		if (input_->TriggerKey(DIK_UPARROW) || input_->TriggerKey(DIK_DOWNARROW)) {
-	    	if (!isSerect_) {
-				isSerect_ = true;
-			} else {
-				isSerect_ = false;
-			}
-	    }
-		DebugText::GetInstance()->ConsolePrintf("Serect = %d\n", isSerect_);
-		if (!isSerect_) {
+		if (!ui_->IsSerect()) {
         	NextStage();
 		}
 
@@ -268,15 +266,7 @@ void GameScene::Update() {
 			camera_.TransferMatrix();
 		}
 
-		if (input_->TriggerKey(DIK_UPARROW) || input_->TriggerKey(DIK_DOWNARROW)) {
-			if (!isSerect_) {
-				isSerect_ = true;
-			} else {
-				isSerect_ = false;
-			}
-		}
 
-		DebugText::GetInstance()->ConsolePrintf("Serect = %d\n", isSerect_);
 		break;
 	case GameScene::Phase::kMain:
 		fade_->Update();
@@ -284,8 +274,6 @@ void GameScene::Update() {
 	default:
 		break;
 	}
-
-
 
 }
 
@@ -354,6 +342,8 @@ void GameScene::Draw() {
 	///< summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	ui_->Draw(player_->IsDead(), player_->IsGoal(), player_->IsGameStart(),allClear);
+
 	fade_->Draw(commandList);
 
 	// スプライト描画後処理
@@ -503,6 +493,7 @@ void GameScene::NextStage() {
     	case Stage::stage2:
 			stage_ = Stage::stage3;
 			needStageReload = true;
+			allClear = true;
     		break;
     	case Stage::stage3:
 			phase_ = Phase::kFadeIn;
@@ -519,6 +510,9 @@ void GameScene::ChangePhase() {
 	case GameScene::Phase::kPlay:
 		if (player_->IsGoal()) {
 			phase_ = Phase::kClear;
+			if (stage_ == Stage::stage3) {
+				allClear = true;
+			}
 		} else if (player_->IsDead()) {
 			phase_ = Phase::kDeath;
 		}
@@ -556,11 +550,13 @@ void GameScene::ChangePhase() {
 			phase_ = Phase::kPlay;
 		} else if (input_->TriggerKey(DIK_SPACE) && isSerect_) {
 			phase_ = Phase::kFadeIn;
+		} else if (input_->TriggerKey(DIK_SPACE) && ui_->IsSerect() || input_->TriggerKey(DIK_SPACE) && stage_ == Stage::stage3) {
+			finished_ = true;
 		}
 		break;
 	case GameScene::Phase::kDeath:
 		if (input_->TriggerKey(DIK_SPACE)) {
-			if (!isSerect_) {
+			if (!ui_->IsSerect()) {
 				// リスタート開始
 				isRestarting_ = true;
 				countdownTime_ = 3.0f; // カウントダウンをリセット
