@@ -6,25 +6,25 @@ void UI::Initialize() {
 	input_ = KamataEngine::Input::GetInstance();
 	cursorPosition = {400, 410};
 
-	textureHandleStartGuide_ = KamataEngine::TextureManager::Load("startGuide.png");
+	textureHandleStartGuide_ = KamataEngine::TextureManager::Load("UI/startGuide.png");
 	spriteStartGuide_ = KamataEngine::Sprite::Create(textureHandleStartGuide_, {0, 0});
 
-	textureHandleCtrGuide_ = KamataEngine::TextureManager::Load("ctrlGuide.png");
+	textureHandleCtrGuide_ = KamataEngine::TextureManager::Load("UI/ctrlGuide.png");
 	spriteCtrlGuide_ = KamataEngine::Sprite::Create(textureHandleCtrGuide_, {0, 0});
 
-	textureHandleShadow_ = KamataEngine::TextureManager::Load("shadow.png");
+	textureHandleShadow_ = KamataEngine::TextureManager::Load("UI/shadow.png");
 	spriteShadow_ = KamataEngine::Sprite::Create(textureHandleShadow_, {0, 0});
 
-	textureHadleClear_ = KamataEngine::TextureManager::Load("clear.png");
+	textureHadleClear_ = KamataEngine::TextureManager::Load("UI/clear.png");
 	spriteClear_ = KamataEngine::Sprite::Create(textureHadleClear_, {0, 0});
 
-	textureHadleGameOver_ = KamataEngine::TextureManager::Load("GameOver.png");
+	textureHadleGameOver_ = KamataEngine::TextureManager::Load("UI/GameOver.png");
 	spriteGameOver_ = KamataEngine::Sprite::Create(textureHadleGameOver_, {0, 0});
 
-	textureHandleCursor_ = KamataEngine::TextureManager::Load("cursor.png");
+	textureHandleCursor_ = KamataEngine::TextureManager::Load("UI/cursor.png");
 	spriteCursor_ = KamataEngine::Sprite::Create(textureHandleCursor_, cursorPosition);
 
-	textHandleAllClear_ = KamataEngine::TextureManager::Load("allClear.png");
+	textHandleAllClear_ = KamataEngine::TextureManager::Load("UI/allClear.png");
 	spriteAllClear_ = KamataEngine::Sprite::Create(textHandleAllClear_, {0, 0});
 }
 
