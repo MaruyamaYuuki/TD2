@@ -31,6 +31,7 @@ GameScene::~GameScene() {
 		}
 	}
 	worldTransformBlocks_.clear();
+	delete ui_;
 }
 
 void GameScene::Initialize() {
@@ -81,11 +82,14 @@ void GameScene::Initialize() {
 
 	debugCamera_ = new DebugCamera(1280, 720);
 
+	ui_->Initialize();
+
 	GenerateBlocks();
 }
 
 void GameScene::Update() { 
 	ChangePhase();
+	ui_->Update(player_->IsDead(), player_->IsGoal());
 
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
@@ -323,6 +327,8 @@ void GameScene::Draw() {
 	///< summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	ui_->Draw(player_->IsDead(), player_->IsGoal(), player_->IsGameStart());
+
 	fade_->Draw(commandList);
 
 	// スプライト描画後処理
@@ -523,7 +529,7 @@ void GameScene::ChangePhase() {
 			// ステージリロードフラグをリセット
 			needStageReload = false;
 			phase_ = Phase::kPlay;
-		} else if (input_->TriggerKey(DIK_SPACE) && isSerect_) {
+		} else if (input_->TriggerKey(DIK_SPACE) && isSerect_ || input_->TriggerKey(DIK_SPACE) && stage_ == Stage::stage3) {
 			finished_ = true;
 		}
 		break;
