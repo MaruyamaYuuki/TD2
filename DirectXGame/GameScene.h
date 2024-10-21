@@ -15,6 +15,8 @@
 #include "CameraController.h"
 #include "3d/DebugCamera.h"
 #include "Fade.h"
+#include "base/TextureManager.h"
+#include "2d/Sprite.h"
 #include "UI.h"
 
 enum class Stage {
@@ -143,6 +145,17 @@ private:
 
 	bool isFading = false;
 
+	uint32_t textureHandleBack1_ = 0;
+	uint32_t textureHandleBack2_ = 0;
+	uint32_t textureHandleBack3_ = 0;
+
+	KamataEngine::Sprite* backSprite1_ = nullptr;
+	KamataEngine::Sprite* backSprite2_ = nullptr;
+	KamataEngine::Sprite* backSprite3_ = nullptr;
+	KamataEngine::Sprite* backSprite4_ = nullptr;
+	KamataEngine::Sprite* backSprite5_ = nullptr;
+
+	KamataEngine::Vector2 size_ = {1300.0f, 750.0f};
 	UI* ui_ = nullptr;
 
 	bool allClear = false;
