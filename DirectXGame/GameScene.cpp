@@ -2,6 +2,7 @@
 #include "base/TextureManager.h"
 #include <cassert>
 #include "2d/DebugText.h"
+#include "imgui.h"
 
 using namespace KamataEngine;
 
@@ -25,6 +26,11 @@ GameScene::~GameScene() {
 	// マップチップフィールドの解放
 	delete mapChipField_; 
 	delete modelBlock_;
+	delete backSprite1_;
+	delete backSprite2_;
+	delete backSprite3_;
+	delete backSprite4_;
+	delete backSprite5_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			delete worldTransformBlock;
@@ -61,6 +67,21 @@ void GameScene::Initialize() {
 	player_->Initialize(modelPlayer_, &camera_, Vector3{78.0f, 9.0f, 0.0f});
 	player_->SetMapChipField(mapChipField_);
 
+	textureHandleBack1_ = TextureManager::Load("Back/BackScreen.png");
+	textureHandleBack2_ = TextureManager::Load("Back/BackScreen2.png");
+	textureHandleBack3_ = TextureManager::Load("Back/Backscreen3.png");
+
+	backSprite1_ = Sprite::Create(textureHandleBack1_, {0, 0});
+	backSprite1_->SetSize(size_);
+	backSprite2_ = Sprite::Create(textureHandleBack2_, {0, 0});
+	backSprite2_->SetSize(size_);
+	backSprite3_ = Sprite::Create(textureHandleBack3_, {0, 0});
+	backSprite3_->SetSize(size_);
+	backSprite4_ = Sprite::Create(textureHandleBack3_, {0, 0});
+	backSprite4_->SetSize(size_);
+	backSprite5_ = Sprite::Create(textureHandleBack3_, {0, 0});
+	backSprite5_->SetSize(size_);
+
 	// フェードの作成
 	fade_ = new Fade();
 	fade_->Initialize();
@@ -86,7 +107,6 @@ void GameScene::Initialize() {
 
 void GameScene::Update() { 
 	ChangePhase();
-
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
     	if (input_->TriggerKey(DIK_SPACE)) {
@@ -98,6 +118,12 @@ void GameScene::Update() {
 
         // プレイヤー更新
         player_->Update();
+		Vector3 pos = player_->GetWorldPosition();
+		backSprite1_->SetPosition({0.0f - pos.x, 0.0f});
+		backSprite2_->SetPosition({1300.0f - pos.x, 0.0f});
+		backSprite3_->SetPosition({0.0f - pos.x * 20, 0.0f});
+		backSprite4_->SetPosition({1300.0f - pos.x * 20, 0.0f});
+		backSprite5_->SetPosition({2600.0f - pos.x * 20, 0.0f});
     	// 障害物の更新
     	for (Hurdle* hurdle : hurdles_) {
      		hurdle->Update();
@@ -275,6 +301,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの処理を追加できる
 	/// </summary>
+	backSprite1_->Draw();
+	backSprite2_->Draw();
+	backSprite3_->Draw();
+	backSprite4_->Draw();
+	backSprite5_->Draw();
 
 	// スプライト処理後描画
 	KamataEngine::Sprite::PostDraw();
@@ -474,7 +505,7 @@ void GameScene::NextStage() {
 			needStageReload = true;
     		break;
     	case Stage::stage3:
-			finished_ = true;
+			phase_ = Phase::kFadeIn;
 			needStageReload = true;
     		break;
     	default:
@@ -524,7 +555,7 @@ void GameScene::ChangePhase() {
 			needStageReload = false;
 			phase_ = Phase::kPlay;
 		} else if (input_->TriggerKey(DIK_SPACE) && isSerect_) {
-			finished_ = true;
+			phase_ = Phase::kFadeIn;
 		}
 		break;
 	case GameScene::Phase::kDeath:

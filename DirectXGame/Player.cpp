@@ -26,10 +26,10 @@ void Player::Update() {
 	if (isGameStart_) {
 		Move();
 	}
-	ImGui::Begin("PlayerState");
+	/*ImGui::Begin("PlayerState");
 	ImGui::DragFloat3("Translate", &worldTransform_.translation_.x, 0.1f);
 	ImGui::DragFloat3("Move", &move_.x, 0.1f);
-	ImGui::End();
+	ImGui::End();*/
 	worldTransform_.UpdateMatrix();
 }
 
