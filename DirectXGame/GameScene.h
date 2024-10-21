@@ -145,6 +145,8 @@ private:
 
 	UI* ui_ = nullptr;
 
+	bool allClear = false;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

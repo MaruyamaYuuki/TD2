@@ -15,13 +15,12 @@ public:
 
 	void Update(bool death, bool goal);
 
-	void Draw(bool death, bool goal, bool start);
+	void Draw(bool death, bool goal, bool start, bool allClear);
 
 	bool IsSerect() const { return serect_; }
 
 private:
 	KamataEngine::Input* input_ = nullptr;
-
 	bool serect_ = false;
 
 	KamataEngine::Vector2 cursorPosition = {0, 0};
@@ -32,6 +31,7 @@ private:
 	uint32_t textureHadleClear_ = 0;
 	uint32_t textureHadleGameOver_ = 0;
 	uint32_t textureHandleCursor_ = 0;
+	uint32_t textHandleAllClear_ = 0;
 
 	KamataEngine::Sprite* spriteStartGuide_ = nullptr;
 	KamataEngine::Sprite* spriteCtrlGuide_ = nullptr;
@@ -39,5 +39,6 @@ private:
 	KamataEngine::Sprite* spriteClear_ = nullptr;
 	KamataEngine::Sprite* spriteGameOver_ = nullptr;
 	KamataEngine::Sprite* spriteCursor_ = nullptr;
+	KamataEngine::Sprite* spriteAllClear_ = nullptr;
 
 };
