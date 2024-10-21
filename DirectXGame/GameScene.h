@@ -15,6 +15,7 @@
 #include "CameraController.h"
 #include "3d/DebugCamera.h"
 #include "Fade.h"
+#include "UI.h"
 
 enum class Stage {
 	stage1 = 0,
@@ -141,6 +142,10 @@ private:
 	float deltaTime_ = 0.1f;
 
 	bool isFading = false;
+
+	UI* ui_ = nullptr;
+
+	bool allClear = false;
 
 	/// <summary>
 	/// ゲームシーン用
