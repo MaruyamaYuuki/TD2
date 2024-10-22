@@ -77,7 +77,7 @@ void Player::Move() {
 		turnTimer_ = 0.0f;
 	}
 	// 画面外に行かないように制限(上下限定)
-	if (worldTransform_.translation_.y == 19.0f || worldTransform_.translation_.y == -19.0f) {
+	if (worldTransform_.translation_.y == 20.0f || worldTransform_.translation_.y == -20.0f) {
 		move_.y = 0.0f;
 	}
 
@@ -93,7 +93,7 @@ void Player::Move() {
 	// 移動量をtranslationに加算
 	worldTransform_.translation_ += move_;
 	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, 0.0f, maxMoveableArea_.x);
-	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, 0.0f, maxMoveableArea_.y);
+	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -1.0f, maxMoveableArea_.y);
 
 }
 

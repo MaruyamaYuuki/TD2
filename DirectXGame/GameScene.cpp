@@ -66,7 +66,7 @@ void GameScene::Initialize() {
 	modelPlayer_ = Model::CreateFromOBJ("player");
 	player_ = new Player();
 	//Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 16);
-	player_->Initialize(modelPlayer_, &camera_, Vector3{78.0f, 9.0f, 0.0f});
+	player_->Initialize(modelPlayer_, &camera_, Vector3{130.0f, 10.0f, 0.0f});
 	player_->SetMapChipField(mapChipField_);
 
 	textureHandleBack1_ = TextureManager::Load("Back/BackScreen.png");
@@ -98,7 +98,7 @@ void GameScene::Initialize() {
 	// リセット
 	cameraController_->Reset();
 	//
-	CameraController::Rect cameraArea = {10.0f, 65.0f, 4.5f, 9.5f};
+	CameraController::Rect cameraArea = {10.0f, 114.0f, 4.5f, 9.5f};
 	//
 	cameraController_->SetMovebleaArea(cameraArea);
 
@@ -141,7 +141,7 @@ void GameScene::Update() {
      		goal->Update();
     	}
 
-    	// ブロックの更新
+    	/*// ブロックの更新
     	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
     		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
     			if (!worldTransformBlock) {
@@ -149,7 +149,7 @@ void GameScene::Update() {
     			}
     			worldTransformBlock->UpdateMatrix();
     		}
-    	}
+    	}*/
 
     	// カメラコントローラの更新
     	cameraController_->Update();
@@ -187,7 +187,7 @@ void GameScene::Update() {
 			goal->Update();
 		}
 
-		// ブロックの更新
+		/*// ブロックの更新
 		for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 			for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 				if (!worldTransformBlock) {
@@ -195,7 +195,7 @@ void GameScene::Update() {
 				}
 				worldTransformBlock->UpdateMatrix();
 			}
-		}
+		}*/
 
 		// カメラコントローラの更新
 		cameraController_->Update();
@@ -237,8 +237,7 @@ void GameScene::Update() {
 		for (Goal* goal : goals_) {
 			goal->Update();
 		}
-
-		// ブロックの更新
+		/*// ブロックの更新
 		for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 			for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 				if (!worldTransformBlock) {
@@ -246,7 +245,8 @@ void GameScene::Update() {
 				}
 				worldTransformBlock->UpdateMatrix();
 			}
-		}
+		}*/
+		
 
 		// カメラコントローラの更新
 		cameraController_->Update();
@@ -321,7 +321,7 @@ void GameScene::Draw() {
 		goal->Draw();
 	}
 
-	// ブロックの描画
+/*// ブロックの描画
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			if (!worldTransformBlock) {
@@ -329,7 +329,7 @@ void GameScene::Draw() {
 			}
 			modelBlock_->Draw(*worldTransformBlock, camera_);
 		}
-	}
+	}*/ 
 
 	// 3Dオブジェクト描画後処理
 	KamataEngine::Model::PostDraw();
@@ -364,7 +364,7 @@ void GameScene::GenerateBlocks() {
 	}
 
 	// ブロックの生成
-	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+	/*for (uint32_t i = 0; i < numBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
 			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
 				WorldTransform* worldTransform = new WorldTransform();
@@ -378,7 +378,7 @@ void GameScene::GenerateBlocks() {
 				worldTransformBlocks_[i][j]->translation_ = originalPosition;
 			}
 		}
-	}
+	}*/ 
 
 	// 障害物の生成
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
@@ -470,13 +470,13 @@ void GameScene::LoadStage() {
 	//mapChipField_->ResetMapChipData();
 	switch (stage_) {
 	case Stage::stage1:
-		mapChipField_->LoadMapChipCsv("Resources/map/Stage1.csv");
+		mapChipField_->LoadMapChipCsv("Resources/map/newStage1.csv");
 		break;
 	case Stage::stage2:
-		mapChipField_->LoadMapChipCsv("Resources/map/Stage2.csv");
+		mapChipField_->LoadMapChipCsv("Resources/map/newStage2.csv");
 		break;
 	case Stage::stage3:
-		mapChipField_->LoadMapChipCsv("Resources/map/Stage3.csv");
+		mapChipField_->LoadMapChipCsv("Resources/map/newStage3.csv");
 		break;
 	default:
 		break;
