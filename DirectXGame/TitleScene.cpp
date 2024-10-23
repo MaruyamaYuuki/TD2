@@ -6,6 +6,7 @@ TitleScene::TitleScene() {}
 
 TitleScene::~TitleScene() { 
 	delete fade_; 
+	//audio->Finalize();
 }
 
 void TitleScene::Initialize() {
@@ -24,6 +25,12 @@ void TitleScene::Initialize() {
 	title2_ = Sprite::Create(titleSprite2_, {400, 480});
 	title3_ = Sprite::Create(titleSprite3_, {0, 0});
 
+	// オーディオの初期化
+	audio = Audio::GetInstance();
+	//audio->Initialize();
+	TitleSound_ = audio->LoadWave("BGM/Title.wav");
+	TitleHandle_ = audio->PlayWave(TitleSound_, true);
+	DecisionSound_ = audio->LoadWave("BGM/Decision.mp3");
 }
 
 void TitleScene::Update() { 
@@ -33,6 +40,7 @@ void TitleScene::Update() {
 			phase_ = Phase::kFadeOut;
 			fade_->Start(Fade::Status::FadeOut, 1.0f);
 			phase_ = Phase::kMain;
+			DecisionHandle_ = audio->PlayWave(DecisionSound_, false);
 		}
 		fade_->Update();
 		break;
@@ -43,6 +51,7 @@ void TitleScene::Update() {
 		}
 		break;
 	case TitleScene::Phase::kFadeOut:
+		audio->StopWave(TitleHandle_);
 		finished_ = true;
 		break;
 	default:

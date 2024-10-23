@@ -39,12 +39,12 @@ GameScene::~GameScene() {
 	worldTransformBlocks_.clear();
 
 	delete ui_;
+	//audio->Finalize();
 }
 
 void GameScene::Initialize() {
-	dxCommon_ = KamataEngine::DirectXCommon::GetInstance();
-	input_ = KamataEngine::Input::GetInstance();
-	audio_ = KamataEngine::Audio::GetInstance();
+	dxCommon_ = DirectXCommon::GetInstance();
+	input_ = Input::GetInstance();
 	camera_.Initialize();
 
 	// ゲームプレイフェーズから開始
@@ -108,6 +108,13 @@ void GameScene::Initialize() {
 	ui_->Initialize();
 	
 	GenerateBlocks();
+
+	//BGM
+	audio = Audio::GetInstance();
+	//audio->Initialize();
+	GameSound_ = audio->LoadWave("BGM/GameBGM.mp3");
+	GameHandle_ = audio->PlayWave(GameSound_, true,0.8f);
+	DecisionSound_ = audio->LoadWave("BGM/Decision.mp3");
 }
 
 void GameScene::Update() { 
@@ -555,6 +562,7 @@ void GameScene::ChangePhase() {
 		break;
 	case GameScene::Phase::kDeath:
 		if (input_->TriggerKey(DIK_SPACE)) {
+			DecisionHandle_ = audio->PlayWave(DecisionSound_, false);
 			if (!ui_->IsSerect()) {
 				// リスタート開始
 				isRestarting_ = true;
@@ -578,6 +586,7 @@ void GameScene::ChangePhase() {
 		}
 		break;
 	case GameScene::Phase::kFadeOut:
+		audio->StopWave(GameHandle_);
 		finished_ = true;
 		break;
 		

@@ -93,7 +93,6 @@ public:
 private:
 	KamataEngine::DirectXCommon* dxCommon_ = nullptr;
 	KamataEngine::Input* input_ = nullptr;
-	KamataEngine::Audio* audio_ = nullptr;
 	KamataEngine::Camera camera_;
 
 	Player* player_ = nullptr;
@@ -159,6 +158,14 @@ private:
 	UI* ui_ = nullptr;
 
 	bool allClear = false;
+
+	KamataEngine::Audio* audio = nullptr;
+	//BGM
+	uint32_t GameSound_ = 0;
+	uint32_t GameHandle_ = 0;
+	// 決定音
+	uint32_t DecisionSound_ = 0;
+	uint32_t DecisionHandle_ = 0;
 
 	/// <summary>
 	/// ゲームシーン用
