@@ -82,6 +82,8 @@ public:
 
 	void Reset();
 
+	bool IsPlayerOutCamera() const { return playerOutCamera; }
+
 private:
 	KamataEngine::Input* input_ = nullptr;
 	KamataEngine::Model* model_ = nullptr;
@@ -141,4 +143,6 @@ private:
 	bool isSwithGravity = false;
 
 	bool isGoal_ = false;
+
+	bool playerOutCamera = false;
 };
