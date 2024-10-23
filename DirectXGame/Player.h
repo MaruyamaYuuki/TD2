@@ -97,7 +97,7 @@ private:
 	KamataEngine::Vector3 maxMoveableArea_ = {0.0f, 0.0f, 0.0f};
 
 	// 移動用Vector3
-	KamataEngine::Vector3 move_ = { 0.0f, -0.3f, 0.0f };
+	KamataEngine::Vector3 move_ = { 0.0f, -0.4f, 0.0f };
 
 	// 上下
 	enum class UDDirection {
