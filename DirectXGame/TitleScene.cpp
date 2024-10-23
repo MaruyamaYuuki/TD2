@@ -1,5 +1,7 @@
 #include "TitleScene.h"
 
+using namespace KamataEngine;
+
 TitleScene::TitleScene() {}
 
 TitleScene::~TitleScene() { 
@@ -14,6 +16,11 @@ void TitleScene::Initialize() {
 	fade_->Initialize();
 	fade_->Start(Fade::Status::FadeIn, 1.0f);
 	camera_.Initialize();
+	titleSprite1_ = TextureManager::Load("start/Title.png");
+	titleSprite2_ = TextureManager::Load("start/StartBuck.png");
+
+	title1_ = Sprite::Create(titleSprite1_, {200, 100});
+	title2_ = Sprite::Create(titleSprite2_, {0, 0});
 
 }
 
@@ -53,7 +60,8 @@ void TitleScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの処理を追加できる
 	/// </summary>
-	fade_->Draw(commandList);
+	title2_->Draw();
+	title1_->Draw();
 	// スプライト処理後描画
 	KamataEngine::Sprite::PostDraw();
 	// 深度バッファクリア
@@ -80,7 +88,7 @@ void TitleScene::Draw() {
 	///< summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-
+	fade_->Draw(commandList);
 	// スプライト描画後処理
 	KamataEngine::Sprite::PostDraw();
 

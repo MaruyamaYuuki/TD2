@@ -551,7 +551,7 @@ void GameScene::ChangePhase() {
 		} else if (input_->TriggerKey(DIK_SPACE) && isSerect_) {
 			phase_ = Phase::kFadeIn;
 		} else if (input_->TriggerKey(DIK_SPACE) && ui_->IsSerect() || input_->TriggerKey(DIK_SPACE) && stage_ == Stage::stage3) {
-			finished_ = true;
+			phase_ = Phase::kFadeIn;
 		}
 		break;
 	case GameScene::Phase::kDeath:
