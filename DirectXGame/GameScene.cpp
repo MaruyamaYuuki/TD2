@@ -476,6 +476,7 @@ void GameScene::LoadStage() {
 		mapChipField_->LoadMapChipCsv("Resources/map/newStage2.csv");
 		break;
 	case Stage::stage3:
+		allClear = true;
 		mapChipField_->LoadMapChipCsv("Resources/map/newStage3.csv");
 		break;
 	default:
@@ -493,7 +494,7 @@ void GameScene::NextStage() {
     	case Stage::stage2:
 			stage_ = Stage::stage3;
 			needStageReload = true;
-			allClear = true;
+
     		break;
     	case Stage::stage3:
 			phase_ = Phase::kFadeIn;
