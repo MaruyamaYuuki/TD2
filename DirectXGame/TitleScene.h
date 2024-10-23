@@ -58,9 +58,11 @@ private:
 
 	uint32_t titleSprite1_ = 0;
 	uint32_t titleSprite2_ = 0;
+	uint32_t titleSprite3_ = 0;
 
 	KamataEngine::Sprite* title1_ = nullptr;
 	KamataEngine::Sprite* title2_ = nullptr;
+	KamataEngine::Sprite* title3_ = nullptr;
 
 	// 終了フラグ
 	bool finished_ = false;

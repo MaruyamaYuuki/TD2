@@ -17,10 +17,12 @@ void TitleScene::Initialize() {
 	fade_->Start(Fade::Status::FadeIn, 1.0f);
 	camera_.Initialize();
 	titleSprite1_ = TextureManager::Load("start/Title.png");
-	titleSprite2_ = TextureManager::Load("start/StartBuck.png");
+	titleSprite2_ = TextureManager::Load("start/Start.png");
+	titleSprite3_ = TextureManager::Load("start/StartBuck.png");
 
-	title1_ = Sprite::Create(titleSprite1_, {200, 100});
-	title2_ = Sprite::Create(titleSprite2_, {0, 0});
+	title1_ = Sprite::Create(titleSprite1_, {200, 180});
+	title2_ = Sprite::Create(titleSprite2_, {400, 480});
+	title3_ = Sprite::Create(titleSprite3_, {0, 0});
 
 }
 
@@ -60,6 +62,7 @@ void TitleScene::Draw() {
 	/// <summary>
 	/// ここに背景スプライトの処理を追加できる
 	/// </summary>
+	title3_->Draw();
 	title2_->Draw();
 	title1_->Draw();
 	// スプライト処理後描画
