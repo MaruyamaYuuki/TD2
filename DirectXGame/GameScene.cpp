@@ -493,6 +493,7 @@ void GameScene::LoadStage() {
 
 void GameScene::NextStage() {
     if (input_->TriggerKey(DIK_SPACE)) {
+		DecisionHandle_ = audio->PlayWave(DecisionSound_, false);
     	switch (stage_) {
     	case Stage::stage1:
 			stage_ = Stage::stage2;
@@ -557,6 +558,7 @@ void GameScene::ChangePhase() {
 			needStageReload = false;
 			phase_ = Phase::kPlay;
 		} else if (input_->TriggerKey(DIK_SPACE) && ui_->IsSerect() || input_->TriggerKey(DIK_SPACE) && allClear){
+			DecisionHandle_ = audio->PlayWave(DecisionSound_, false);
 			phase_ = Phase::kFadeIn;
 		}
 		break;
