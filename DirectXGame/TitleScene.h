@@ -7,6 +7,7 @@
 #include "3d/Model.h"
 #include "3d/ObjectColor.h"
 #include "Fade.h"
+#include "base/TextureManager.h"
 
 /// <summary>
 /// タイトルシーン
@@ -54,6 +55,12 @@ private:
 	KamataEngine::Input* input_ = nullptr;
 	KamataEngine::Audio* audio_ = nullptr;
 	KamataEngine::Camera camera_;
+
+	uint32_t titleSprite1_ = 0;
+	uint32_t titleSprite2_ = 0;
+
+	KamataEngine::Sprite* title1_ = nullptr;
+	KamataEngine::Sprite* title2_ = nullptr;
 
 	// 終了フラグ
 	bool finished_ = false;
