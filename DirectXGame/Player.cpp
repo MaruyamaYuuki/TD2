@@ -95,6 +95,10 @@ void Player::Move() {
 	worldTransform_.translation_.x = std::clamp(worldTransform_.translation_.x, 0.0f, maxMoveableArea_.x);
 	worldTransform_.translation_.y = std::clamp(worldTransform_.translation_.y, -1.0f, maxMoveableArea_.y);
 
+	if (worldTransform_.translation_.x == maxMoveableArea_.x) {
+		playerOutCamera = true;
+	}
+
 }
 
 void Player::Draw() { model_->Draw(worldTransform_, *camera_, &objectColor_);}
@@ -140,4 +144,5 @@ void Player::Reset() {
 	isGameStart_ = false;
 	isGoal_ = false;
 	isDead_ = false;
+	playerOutCamera = false;
 }

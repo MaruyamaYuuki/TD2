@@ -28,9 +28,8 @@ void UI::Initialize() {
 	spriteAllClear_ = KamataEngine::Sprite::Create(textHandleAllClear_, {0, 0});
 }
 
-void UI::Update(bool death, bool goal) {
+void UI::Update(bool death, bool goal,bool allClear) {
 	if (death || goal) {
-
 		if (input_->TriggerKey(DIK_UPARROW) || input_->TriggerKey(DIK_DOWNARROW)) {
 			if (!serect_) {
 				serect_ = true;
@@ -44,7 +43,9 @@ void UI::Update(bool death, bool goal) {
 			}
 		}
 	}
-
+	if (goal && allClear) {
+		serectON = true;
+	}
 }
 
 void UI::Draw(bool death, bool goal, bool start, bool allClear) { 
@@ -53,10 +54,10 @@ void UI::Draw(bool death, bool goal, bool start, bool allClear) {
 		spriteGameOver_->Draw();
 		spriteCursor_->Draw();
 	} else if (goal) {
-		spriteShadow_->Draw();
 		if (allClear) {
             spriteAllClear_->Draw();
 		} else {
+    		spriteShadow_->Draw();
     		spriteClear_->Draw();
     		spriteCursor_->Draw();
 		}

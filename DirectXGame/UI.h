@@ -6,6 +6,8 @@
 #include "2d/Sprite.h"
 #include "math/Vector2.h"
 
+class Player;
+
 /// <summary>
 /// UI
 /// </summary>
@@ -13,15 +15,18 @@ class UI {
 public:
 	void Initialize();
 
-	void Update(bool death, bool goal);
+	void Update(bool death, bool goal,bool allClear);
 
 	void Draw(bool death, bool goal, bool start, bool allClear);
 
 	bool IsSerect() const { return serect_; }
 
+	bool IsSerectON() const { return serectON; }
+
 private:
 	KamataEngine::Input* input_ = nullptr;
 	bool serect_ = false;
+	bool serectON = false;
 
 	KamataEngine::Vector2 cursorPosition = {0, 0};
 

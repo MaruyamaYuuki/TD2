@@ -111,8 +111,9 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() { 
+
 	ChangePhase();
-	ui_->Update(player_->IsDead(), player_->IsGoal());
+	ui_->Update(player_->IsDead(), player_->IsGoal(), allClear);
 
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
@@ -274,7 +275,6 @@ void GameScene::Update() {
 	default:
 		break;
 	}
-
 }
 
 void GameScene::Draw() {
@@ -549,9 +549,7 @@ void GameScene::ChangePhase() {
 			// ステージリロードフラグをリセット
 			needStageReload = false;
 			phase_ = Phase::kPlay;
-		} else if (input_->TriggerKey(DIK_SPACE) && isSerect_) {
-			phase_ = Phase::kFadeIn;
-		} else if (input_->TriggerKey(DIK_SPACE) && ui_->IsSerect() || input_->TriggerKey(DIK_SPACE) && stage_ == Stage::stage3) {
+		} else if (input_->TriggerKey(DIK_SPACE) && ui_->IsSerect() || input_->TriggerKey(DIK_SPACE) && allClear){
 			phase_ = Phase::kFadeIn;
 		}
 		break;
